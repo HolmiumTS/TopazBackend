@@ -123,11 +123,12 @@ public abstract class Users {
     }
 
     private static String I2S(int[] docs){
-        StringBuilder s=new StringBuilder();
-        for (int doc : docs) {
-            s.append(Integer.toString(doc));
-            s.append(";");
+        String[] bb=new String[docs.length];
+        for (int i=0;i<docs.length;i++){
+            bb[i]=Integer.toString(docs[i]);
         }
-        return s.toString();
+        String s="";
+        s.join(";",docs.toString());
+        return s;
     }
 }
