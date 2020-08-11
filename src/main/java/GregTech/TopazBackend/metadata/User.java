@@ -59,7 +59,7 @@ public class User {
 
     public void setLatestDoc(String latestDoc) {
         this.latestDoc = Arrays.stream(latestDoc.split(Constant.SEPARATOR))
-                .mapToInt(Integer::valueOf)
+                .mapToInt(Integer::parseInt)
                 .toArray();
     }
 

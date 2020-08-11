@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 public class Register {
-    @RequestMapping(value = "/register",
+    @RequestMapping(value = "/Register",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         User user = new User();
