@@ -7,9 +7,9 @@ create table Doc
     team     int                                    not null,
     view     tinyint(1)                             not null,
     edit     tinyint(1)                             not null,
-    `create` int                                    not null,
-    `update` int                                    null,
-    count    int                                    null,
+    `create` timestamp                              not null,
+    `update` timestamp                              null,
+    count    int                      default 0     null,
     content  longtext                               null,
     isDel    tinyint(1)                             not null,
     constraint Doc_Team_tid_fk
