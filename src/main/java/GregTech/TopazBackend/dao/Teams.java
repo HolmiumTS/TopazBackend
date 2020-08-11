@@ -33,6 +33,7 @@ public abstract class Teams {
      * @return a list of all teams that include this user, return an empty list if none
      */
     public static List<Team> getTeamsById(int id) {
+        //todo
             String sql ="";
             List<Team> teams = jdbc.query(sql,new TeamsMapper());
         return new ArrayList<>();
