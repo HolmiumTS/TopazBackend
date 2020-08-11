@@ -1,6 +1,7 @@
 package GregTech.TopazBackend.dao;
 
 import GregTech.TopazBackend.metadata.User;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -20,32 +21,36 @@ public abstract class Users {
     /**
      * @return return RowMapper<User> as the second argument of queryForObject
      */
-    private static RowMapper<User> getU() {
-        return (rs, rowNum) -> {
-            if (!rs.next()) { // rs is null
-                return null;
-            } else {
-                User user1 = new User();
-                user1.setId(rs.getInt("id"));
-                user1.setName(rs.getString("name"));
-                user1.setPassword(rs.getString("password"));
-                user1.setEmail(rs.getString("email"));
-                user1.setLatestDoc(rs.getString("latestDoc"));
-                user1.setTel(rs.getString("tel"));
-                user1.setAvatar(rs.getString("avatar"));
-                return user1;
-            }
-        };
+    private static class UserMapper implements RowMapper<User>{
+
+        @Override
+        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+            User user1 = new User();
+            user1.setId(rs.getInt("id"));
+            user1.setName(rs.getString("name"));
+            user1.setPassword(rs.getString("password"));
+            user1.setEmail(rs.getString("email"));
+            user1.setLatestDoc(rs.getString("latestDoc"));
+            user1.setTel(rs.getString("tel"));
+            user1.setAvatar(rs.getString("avatar"));
+            return user1;
+        }
     }
+
 
     /**
      * @param id user's id
      * @return null if no such user
      */
     public static User getById(int id) {
-        String sql = "select  * from User U where U.id=?";
-        User user = jdbc.queryForObject(sql, getU(), id);
-        return user;
+        try {
+            String sql = "select  * from User U where U.id=?";
+            User user = jdbc.queryForObject(sql,new UserMapper(), id);
+            return user;
+        }catch (EmptyResultDataAccessException e){
+            return null;
+        }
+
     }
 
     /**
@@ -53,9 +58,14 @@ public abstract class Users {
      * @return null if no such email
      */
     public static User getByEmail(String email) {
-        String sql = "select  * from User U where U.email=?";
-        User user = jdbc.queryForObject(sql, getU(), email);
-        return user;
+        try {
+            String sql = "select  * from User U where U.email=?";
+            User user = jdbc.queryForObject(sql, new UserMapper(), email);
+            return user;
+        }catch (EmptyResultDataAccessException e){
+            return null;
+        }
+
     }
 
     /**
@@ -63,9 +73,14 @@ public abstract class Users {
      * @return null if no such email
      */
     public static User getByTel(String tel) {
-        String sql = "select  * from User U where U.tel=?";
-        User user = jdbc.queryForObject(sql, getU(), tel);
-        return user;
+        try{
+            String sql = "select  * from User U where U.tel=?";
+            User user = jdbc.queryForObject(sql, new UserMapper(), tel);
+            return user;
+        }catch (EmptyResultDataAccessException e){
+            return null;
+        }
+
     }
 
     /**
