@@ -40,6 +40,7 @@ public abstract class Users {
      * @return user's id, -1 if failed
      */
     public static int addUser(User user) {
+
         return -1;
     }
 
