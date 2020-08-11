@@ -13,6 +13,10 @@ public class User {
     String tel;
     String avatar;
 
+    public User() {
+        id = -1;
+    }
+
     public int getId() {
         return id;
     }
