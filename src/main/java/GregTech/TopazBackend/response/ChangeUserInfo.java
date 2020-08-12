@@ -38,9 +38,14 @@ public class ChangeUserInfo {
             user.setTel((String) body.get("tel"));
             user.setName((String) body.get("username"));
             user.setEmail((String) body.get("email"));
-            userDao.updateUser(user);
-            log.trace("Change successfully.");
-            result.put("result", true);
+            boolean r = userDao.updateUser(user);
+            if (!r) {
+                log.warn("Change failed: Unknown error.");
+                result.put("result", false);
+            } else {
+                log.trace("Change successfully.");
+                result.put("result", true);
+            }
         }
         return result;
     }

@@ -24,6 +24,7 @@ public class ChangeUserPassword {
     public ChangeUserPassword(Users userDao) {
         this.userDao = userDao;
     }
+
     @RequestMapping(value = "/ChangeUserPassword",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
@@ -39,9 +40,14 @@ public class ChangeUserPassword {
             result.put("result", false);
         } else {
             user.setPassword((String) body.get("newPassword"));
-            userDao.updateUser(user);
-            log.trace("Change successfully.");
-            result.put("result", true);
+            boolean r = userDao.updateUser(user);
+            if (!r) {
+                log.warn("Change failed: Unknown error.");
+                result.put("result", false);
+            } else {
+                log.trace("Change successfully.");
+                result.put("result", true);
+            }
         }
         return result;
     }

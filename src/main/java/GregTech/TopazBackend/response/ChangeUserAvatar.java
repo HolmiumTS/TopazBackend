@@ -36,9 +36,14 @@ public class ChangeUserAvatar {
             result.put("result", false);
         } else {
             user.setAvatar((String) body.get("avatar"));
-            userDao.updateUser(user);
-            log.trace("Change successfully.");
-            result.put("result", true);
+            boolean r = userDao.updateUser(user);
+            if (!r) {
+                log.warn("Change failed: Unknown error.");
+                result.put("result", false);
+            } else {
+                log.trace("Change successfully.");
+                result.put("result", true);
+            }
         }
         return result;
     }
