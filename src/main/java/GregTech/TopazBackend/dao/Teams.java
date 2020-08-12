@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Teams {
+
     @Resource
     private static JdbcTemplate jdbc = new JdbcTemplate();
 
@@ -34,8 +35,11 @@ public abstract class Teams {
      */
     public static List<Team> getTeamsById(int id) {
         //todo
-        String sql = "";
-        List<Team> teams = jdbc.query(sql, new TeamsMapper());
+
+            String sql ="";
+            JdbcTemplate jdbc =new TemplateInit().getTemplate();
+            List<Team> teams = jdbc.query(sql,new TeamsMapper());
+
         return new ArrayList<>();
     }
 
@@ -44,14 +48,16 @@ public abstract class Teams {
      * @return null if no such team
      */
     public static Team getTeamByTid(int tid) {
-        String sql = "select * from Team T where tid=?";
-        try {
-            Team team = jdbc.queryForObject(sql, new TeamsMapper(), tid);
-            return team;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-    }
+
+    String sql="select * from Team T where tid=?";
+    try {
+        JdbcTemplate jdbc =new TemplateInit().getTemplate();
+        Team team =jdbc.queryForObject(sql, new TeamsMapper(),tid);
+        return team;
+    }catch (EmptyResultDataAccessException e){
+        return null;
+
+    }}
 
     /**
      * Set a user in a team to be (or not to be) an admin

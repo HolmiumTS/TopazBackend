@@ -6,12 +6,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +19,7 @@ import java.util.List;
 
 @Repository("userDao")
 public class Users {
-    private JdbcTemplate jdbc;
+    private final JdbcTemplate jdbc;
 
     @Autowired
     public Users(JdbcTemplate jdbc) {
@@ -52,6 +50,7 @@ public class Users {
      * @param id user's id
      * @return null if no such user
      */
+
     public User getById(int id) {
         try {
             String sql = "select  * from User U where U.id=?";
