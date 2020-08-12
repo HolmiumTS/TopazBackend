@@ -12,11 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Teams {
-    @Resource
-    private static JdbcTemplate jdbc = new JdbcTemplate();
-
+    /**
+     * RowMapper interface
+     * */
     private static class TeamsMapper implements RowMapper<Team>{
-
         @Override
         public Team mapRow(ResultSet rs, int rowNum) throws SQLException {
             Team team=new Team();
@@ -35,6 +34,7 @@ public abstract class Teams {
     public static List<Team> getTeamsById(int id) {
         //todo
             String sql ="";
+            JdbcTemplate jdbc =new TemplateInit().getTemplate();
             List<Team> teams = jdbc.query(sql,new TeamsMapper());
         return new ArrayList<>();
     }
@@ -45,6 +45,7 @@ public abstract class Teams {
     public static Team getTeamByTid(int tid) {
     String sql="select * from Team T where tid=?";
     try {
+        JdbcTemplate jdbc =new TemplateInit().getTemplate();
         Team team =jdbc.queryForObject(sql, new TeamsMapper(),tid);
         return team;
     }catch (EmptyResultDataAccessException e){

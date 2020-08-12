@@ -1,6 +1,7 @@
 package GregTech.TopazBackend.dao;
 
 import GregTech.TopazBackend.metadata.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -8,6 +9,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.sql.Connection;
@@ -16,11 +18,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-public abstract class Users {
-    @Resource
-    private static JdbcTemplate jdbc = new JdbcTemplate();
-
+@Component
+public class Users {
+    @Resource(name="jdbcTemplate")
+    private JdbcTemplate jdbc ;
+    static Users users=new Users();
     /**
      * @return return RowMapper<User> as the second argument of queryForObject
      */
@@ -46,9 +48,10 @@ public abstract class Users {
      * @return null if no such user
      */
     public static User getById(int id) {
+
         try {
             String sql = "select  * from User U where U.id=?";
-            User user = jdbc.queryForObject(sql, new UserMapper(), id);
+            User user = users.jdbc.queryForObject(sql, new UserMapper(), id);
             return user;
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -63,7 +66,7 @@ public abstract class Users {
     public static User getByEmail(String email) {
         try {
             String sql = "select  * from User U where U.email=?";
-            User user = jdbc.queryForObject(sql, new UserMapper(), email);
+            User user = users.jdbc.queryForObject(sql, new UserMapper(), email);
             return user;
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -78,7 +81,7 @@ public abstract class Users {
     public static User getByTel(String tel) {
         try {
             String sql = "select  * from User U where U.tel=?";
-            User user = jdbc.queryForObject(sql, new UserMapper(), tel);
+            User user = users.jdbc.queryForObject(sql, new UserMapper(), tel);
             return user;
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -93,7 +96,7 @@ public abstract class Users {
     public static boolean updateUser(User user) {
         String sql = "update User u set u.id=?,u.name=?,u.password=?,u.email=?" +
                 ",u.latestDoc=?,u.tel=?,u.avatar=? where u.id=?";
-        int i = jdbc.update(sql, user.getId(), user.getName(), user.getPassword()
+        int i = users.jdbc.update(sql, user.getId(), user.getName(), user.getPassword()
                 , user.getEmail(), user.getLatestDoc(), user.getTel(), user.getAvatar(), user.getId());
         if (i > 0) {
             return true;
@@ -109,7 +112,7 @@ public abstract class Users {
     public static int addUser(User user) {
         String sql = "insert  into User(name,password,email,latestDoc,tel,avatar) values(?,?,?,?,?,?) ";
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        int i = jdbc.update(new PreparedStatementCreator() {
+        int i = users.jdbc.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
@@ -158,7 +161,7 @@ public abstract class Users {
     /**
      *this is used to Test if
      */
-
+/*
     public static void main(String[] args) {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
@@ -166,9 +169,11 @@ public abstract class Users {
         dataSource.setUsername("root");
         dataSource.setPassword("ReSEFromZero");
         jdbc=new JdbcTemplate(dataSource);
+        //test get
         System.out.println(getByEmail("1145141919@qq.com"));
         System.out.println(getByTel("15911952508"));
         System.out.println(getById(100000000));
+        //test addUser()
         User testCase =new User();
         testCase.setName("aaa");
         testCase.setPassword("123456778");
@@ -177,5 +182,9 @@ public abstract class Users {
         testCase.setEmail("123@qq.com");
         testCase.setTel("15911952555");
         addUser(testCase);
-    }
+        //test update()
+
+
+
+    }*/
 }
