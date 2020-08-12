@@ -7,8 +7,8 @@ public class Doc {
     int team;
     boolean view;
     boolean edit;
-    int create;
-    int update;
+    long create;
+    long update;
     int count;
     String content;
     boolean isDel;
@@ -61,19 +61,19 @@ public class Doc {
         this.edit = edit;
     }
 
-    public int getCreate() {
+    public long getCreate() {
         return create;
     }
 
-    public void setCreate(int create) {
+    public void setCreate(long create) {
         this.create = create;
     }
 
-    public int getUpdate() {
+    public long getUpdate() {
         return update;
     }
 
-    public void setUpdate(int update) {
+    public void setUpdate(long update) {
         this.update = update;
     }
 
