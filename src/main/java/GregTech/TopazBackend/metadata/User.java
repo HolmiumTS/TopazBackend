@@ -59,6 +59,10 @@ public class User {
     }
 
     public void setLatestDoc(String latestDoc) {
+        if ("".equals(latestDoc)) {
+            this.latestDoc = new int[0];
+            return;
+        }
         this.latestDoc = Arrays.stream(latestDoc.split(Constant.SEPARATOR))
                 .mapToInt(Integer::parseInt)
                 .toArray();
@@ -76,6 +80,10 @@ public class User {
             tmp[0] = latestDocId;
             latestDoc = tmp;
             return true;
+        } else if (latestDoc.length == 0) {
+            latestDoc = new int[1];
+            latestDoc[0] = latestDocId;
+            return false;
         } else {
             int len = latestDoc.length;
             int[] tmp = new int[len + 1];
