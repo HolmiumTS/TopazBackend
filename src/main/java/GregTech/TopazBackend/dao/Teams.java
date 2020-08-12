@@ -73,6 +73,19 @@ public class Teams {
      * @return false if the admin is the owner
      */
     public boolean setAdmin(int tid, int id, boolean isAdmin) {
+        //todo
+        return true;
+    }
+
+    /**
+     * Remove a user from a team
+     *
+     * @param tid team id
+     * @param id  user id
+     * @return false if the user is the owner of the team (and do not remove this user)
+     */
+    public boolean removeUser(int tid, int id) {
+        //todo
         return true;
     }
 }

@@ -13,25 +13,35 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class CancelAdmin {
+public class KickOffUser {
     private static final Logger log = LoggerFactory.getLogger(CancelAdmin.class);
 
     private final Teams teamDao;
 
     @Autowired
-    public CancelAdmin(Teams teamDao) {
+    public KickOffUser(Teams teamDao) {
         this.teamDao = teamDao;
     }
 
-    @RequestMapping(value = "/CancelAdmin",
+    @RequestMapping(value = "/KickOff",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public Map<String, Object> response(@RequestBody Map<String, Object> body) {
+    public Map<String, Object> response1(@RequestBody Map<String, Object> body) {
+        return kick(body);
+    }
+
+    @RequestMapping(value = "/QuitTeam",
+            method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public Map<String, Object> response2(@RequestBody Map<String, Object> body) {
+        return kick(body);
+    }
+
+    private Map<String, Object> kick(Map<String, Object> body) {
         Map<String, Object> res = new HashMap<>();
         int tid = Integer.parseInt((String) body.get("teamId"));
         int id = Integer.parseInt((String) body.get("id"));
-        boolean r = teamDao.setAdmin(tid, id, false);
+        boolean r = teamDao.removeUser(tid, id);
         if (!r) {
-            log.warn("Cancel admin failed, tid is {}, id is {}.", tid, id);
+            log.warn("Kick off failed, tid is {}, id is {}.", tid, id);
         }
         res.put("result", r);
         return res;
