@@ -5,6 +5,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
@@ -153,5 +154,28 @@ public abstract class Users {
     public static List<User> getAdminUserByTid(int tid) {
         //todo
         return new ArrayList<>();
+    }
+    /**
+     *this is used to Test if
+     */
+
+    public static void main(String[] args) {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/SE?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&userAffectedRows=true");
+        dataSource.setUsername("root");
+        dataSource.setPassword("ReSEFromZero");
+        jdbc=new JdbcTemplate(dataSource);
+        System.out.println(getByEmail("1145141919@qq.com"));
+        System.out.println(getByTel("15911952508"));
+        System.out.println(getById(100000000));
+        User testCase =new User();
+        testCase.setName("aaa");
+        testCase.setPassword("123456778");
+        testCase.setAvatar("asd");
+        testCase.setLatestDoc("1;2;3");
+        testCase.setEmail("123@qq.com");
+        testCase.setTel("15911952555");
+        addUser(testCase);
     }
 }
