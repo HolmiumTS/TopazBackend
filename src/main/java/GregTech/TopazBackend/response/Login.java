@@ -4,6 +4,7 @@ import GregTech.TopazBackend.dao.Users;
 import GregTech.TopazBackend.metadata.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,14 @@ import java.util.Map;
 public class Login {
     private static final Logger log = LoggerFactory.getLogger(Login.class);
 
+
+    private final Users userDao;
+
+    @Autowired
+    public Login(Users userDao) {
+        this.userDao = userDao;
+    }
+
     @RequestMapping(value = "/Login",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
@@ -24,7 +33,7 @@ public class Login {
         User user = null;
         if (uu.matches("[0-9]{1,9}")) {
             int id = Integer.parseInt(uu);
-            user = Users.getById(id);
+            user = userDao.getById(id);
             if (user != null) {
                 collectData(res, user);
                 res.put("result", true);
@@ -33,7 +42,7 @@ public class Login {
             }
         }
         if (uu.matches(".*@.*\\..*")) {
-            user = Users.getByEmail(uu);
+            user = userDao.getByEmail(uu);
             if (user != null) {
                 collectData(res, user);
                 res.put("result", true);
@@ -42,7 +51,7 @@ public class Login {
             }
         }
         if (uu.matches("[0-9]{8,11}")) {
-            user = Users.getByTel(uu);
+            user = userDao.getByTel(uu);
             if (user != null) {
                 collectData(res, user);
                 res.put("result", true);
