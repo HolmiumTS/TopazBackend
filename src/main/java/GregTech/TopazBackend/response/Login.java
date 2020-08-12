@@ -29,13 +29,14 @@ public class Login {
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         String uu = (String) body.get("user");
+        String password = (String) body.get("password");
         Map<String, Object> res = new HashMap<>();
         User user = null;
         if (uu.matches("[0-9]{1,9}")) {
             int id = Integer.parseInt(uu);
             user = userDao.getById(id);
-            if (user != null) {
-                collectData(res, user);
+            if (user != null && password.equals(user.getPassword())) {
+                res.putAll(collectData(user));
                 res.put("result", true);
                 log.trace("Login by id successfully. Id is {}", id);
                 return res;
@@ -43,8 +44,8 @@ public class Login {
         }
         if (uu.matches(".*@.*\\..*")) {
             user = userDao.getByEmail(uu);
-            if (user != null) {
-                collectData(res, user);
+            if (user != null && password.equals(user.getPassword())) {
+                res.putAll(collectData(user));
                 res.put("result", true);
                 log.trace("Login by email successfully. Email is {}", uu);
                 return res;
@@ -52,8 +53,8 @@ public class Login {
         }
         if (uu.matches("[0-9]{8,11}")) {
             user = userDao.getByTel(uu);
-            if (user != null) {
-                collectData(res, user);
+            if (user != null && password.equals(user.getPassword())) {
+                res.putAll(collectData(user));
                 res.put("result", true);
                 log.trace("Login by tel successfully. Tel is {}", uu);
                 return res;
@@ -64,9 +65,11 @@ public class Login {
         return res;
     }
 
-    private void collectData(Map<String, Object> res, User user) {
-        res.put("id", String.valueOf(user.getId()));
-        res.put("username", user.getName());
-        res.put("avatar", user.getAvatar());
+    private Map<String, Object> collectData(User user) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", String.valueOf(user.getId()));
+        map.put("username", user.getName());
+        map.put("avatar", user.getAvatar());
+        return map;
     }
 }
