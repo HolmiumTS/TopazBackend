@@ -57,7 +57,7 @@ public abstract class Teams {
     }catch (EmptyResultDataAccessException e){
         return null;
 
-    }
+    }}
 
     /**
      * Set a user in a team to be (or not to be) an admin
@@ -70,4 +70,4 @@ public abstract class Teams {
     public static boolean setAdmin(int tid, int id, boolean isAdmin) {
         return true;
     }
-}}
+}
