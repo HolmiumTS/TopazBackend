@@ -32,6 +32,7 @@ public class Register {
         user.setEmail((String) body.get("email"));
         user.setName((String) body.get("username"));
         user.setTel((String) body.get("tel"));
+        user.setPassword((String) body.get("password"));
         int id = userDao.addUser(user);
         Map<String, Object> res = new HashMap<>();
         res.put("result", id == -1);
@@ -43,5 +44,4 @@ public class Register {
         }
         return res;
     }
-
 }
