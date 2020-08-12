@@ -4,6 +4,7 @@ import GregTech.TopazBackend.dao.Teams;
 import GregTech.TopazBackend.metadata.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,11 +19,18 @@ import java.util.stream.Collectors;
 public class GetUserTeam {
     private static final Logger log = LoggerFactory.getLogger(GetUserTeam.class);
 
+    private final Teams teamDao;
+
+    @Autowired
+    public GetUserTeam(Teams teamDao) {
+        this.teamDao = teamDao;
+    }
+
     @RequestMapping(value = "/GetUserTeam",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public List<Map<String, Object>> response(@RequestBody Map<String, Object> body) {
         int id = Integer.parseInt((String) body.get("id"));
-        List<Team> teamsById = Teams.getTeamsById(id);
+        List<Team> teamsById = teamDao.getTeamsById(id);
         List<Map<String, Object>> result = teamsById.stream().map(this::collectData).collect(Collectors.toList());
         log.trace("Result is {}", result);
         return result;
@@ -34,6 +42,5 @@ public class GetUserTeam {
         map.put("name", team.getName());
         return map;
     }
-
 }
 

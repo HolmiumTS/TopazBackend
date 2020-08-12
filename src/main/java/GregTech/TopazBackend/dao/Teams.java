@@ -1,20 +1,26 @@
 package GregTech.TopazBackend.dao;
 
 import GregTech.TopazBackend.metadata.Team;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Teams {
+@Repository("teamDao")
+public class Teams {
 
-    @Resource
-    private static JdbcTemplate jdbc = new JdbcTemplate();
+    private final JdbcTemplate jdbc;
+
+    @Autowired
+    public Teams(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
 
     private static class TeamsMapper implements RowMapper<Team> {
 
@@ -33,12 +39,11 @@ public abstract class Teams {
      * @param id user's id
      * @return a list of all teams that include this user, return an empty list if none
      */
-    public static List<Team> getTeamsById(int id) {
+    public List<Team> getTeamsById(int id) {
         //todo
 
-            String sql ="";
-            JdbcTemplate jdbc =new TemplateInit().getTemplate();
-            List<Team> teams = jdbc.query(sql,new TeamsMapper());
+        String sql = "";
+        List<Team> teams = jdbc.query(sql, new TeamsMapper());
 
         return new ArrayList<>();
     }
@@ -47,17 +52,17 @@ public abstract class Teams {
      * @param tid team id
      * @return null if no such team
      */
-    public static Team getTeamByTid(int tid) {
+    public Team getTeamByTid(int tid) {
 
-    String sql="select * from Team T where tid=?";
-    try {
-        JdbcTemplate jdbc =new TemplateInit().getTemplate();
-        Team team =jdbc.queryForObject(sql, new TeamsMapper(),tid);
-        return team;
-    }catch (EmptyResultDataAccessException e){
-        return null;
+        String sql = "select * from Team T where tid=?";
+        try {
+            Team team = jdbc.queryForObject(sql, new TeamsMapper(), tid);
+            return team;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
 
-    }}
+        }
+    }
 
     /**
      * Set a user in a team to be (or not to be) an admin
@@ -67,7 +72,7 @@ public abstract class Teams {
      * @param isAdmin true (add an admin), false (del an admin)
      * @return false if the admin is the owner
      */
-    public static boolean setAdmin(int tid, int id, boolean isAdmin) {
+    public boolean setAdmin(int tid, int id, boolean isAdmin) {
         return true;
     }
 }
