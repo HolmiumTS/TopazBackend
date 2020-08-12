@@ -30,6 +30,11 @@ public class SetAdmin {
         Map<String, Object> res = new HashMap<>();
         int tid = Integer.parseInt((String) body.get("teamId"));
         int id = Integer.parseInt((String) body.get("id"));
+        boolean r = teamDao.setAdmin(tid, id, true);
+        if (!r) {
+            log.warn("Set admin failed, tid is {}, id is {}.", tid, id);
+        }
+        res.put("result", r);
         return res;
     }
 }
