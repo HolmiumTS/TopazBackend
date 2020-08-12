@@ -17,7 +17,6 @@ import java.util.Map;
 public class GetUserInfo {
     private static final Logger log = LoggerFactory.getLogger(GetTeamInfo.class);
 
-
     private final Users userDao;
 
     @Autowired

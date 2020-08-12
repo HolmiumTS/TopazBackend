@@ -13,23 +13,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class SetAdmin {
-    private static final Logger log = LoggerFactory.getLogger(SetAdmin.class);
+public class CancelAdmin {
+    private static final Logger log = LoggerFactory.getLogger(CancelAdmin.class);
 
     private final Teams teamDao;
 
     @Autowired
-    public SetAdmin(Teams teamDao) {
+    public CancelAdmin(Teams teamDao) {
         this.teamDao = teamDao;
     }
 
-    @RequestMapping(value = "/SetAdmin",
+    @RequestMapping(value = "/CancelAdmin",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         Map<String, Object> res = new HashMap<>();
         int tid = Integer.parseInt((String) body.get("teamId"));
         int id = Integer.parseInt((String) body.get("id"));
-        boolean r = teamDao.setAdmin(tid, id, true);
+        boolean r = teamDao.setAdmin(tid, id, false);
         if (!r) {
             log.warn("Set admin failed, tid is {}, id is {}.", tid, id);
         }
