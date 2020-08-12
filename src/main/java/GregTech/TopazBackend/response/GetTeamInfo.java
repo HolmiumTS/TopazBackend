@@ -16,7 +16,7 @@ import java.util.Map;
 public class GetTeamInfo {
     private static final Logger log = LoggerFactory.getLogger(GetTeamInfo.class);
 
-    @RequestMapping(value = "/ChangeUserPassword",
+    @RequestMapping(value = "/GetTeamInfo",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         int tid = Integer.parseInt((String) body.get("teamId"));
@@ -28,6 +28,7 @@ public class GetTeamInfo {
             result.put("result", false);
         } else {
             result.putAll(collectData(team));
+            log.trace("Get successfully.");
             result.put("result", true);
         }
         return result;
