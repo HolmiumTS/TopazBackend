@@ -54,6 +54,7 @@ public class GetTeamMember {
                 .map(String::valueOf)
                 .collect(Collectors.toList());
         res.put("memberId", memberId);
+        res.put("result", true);
         return res;
     }
 }
