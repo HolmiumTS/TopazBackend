@@ -9,6 +9,8 @@ import java.util.List;
 
 @Repository("applyDao")
 public class Applies {
+
+
     /**
      * Get all applies a user applied (with specific apply status)
      *

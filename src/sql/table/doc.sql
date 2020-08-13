@@ -12,9 +12,9 @@ create table doc
     count    int                      default 0     null,
     content  longtext                               null,
     isDel    tinyint(1)                             not null,
-    constraint Doc_Team_tid_fk
+    constraint doc_team_tid_fk
         foreign key (team) references team (tid),
-    constraint Doc_User_id_fk
-        foreign key (owner) references User (id)
+    constraint doc_user_id_fk
+        foreign key (owner) references user (id)
 );
 
