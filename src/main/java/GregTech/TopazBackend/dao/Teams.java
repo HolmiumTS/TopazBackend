@@ -23,7 +23,7 @@ import java.util.List;
 
 @Repository("teamDao")
 public class Teams {
-    private static final Logger log =LoggerFactory.getLogger(CancelAdmin.class);
+    private static final Logger log = LoggerFactory.getLogger(CancelAdmin.class);
     private final JdbcTemplate jdbc;
 
     @Autowired
@@ -80,14 +80,14 @@ public class Teams {
      */
     public boolean setAdmin(int tid, int id, boolean isAdmin) {
         try {
-            String sql="update u_t ut set ut.isAdmin=? where team=? and user=?";
-            int i=jdbc.update(sql,isAdmin?1:0,tid,id);
+            String sql = "update u_t ut set ut.isAdmin=? where team=? and user=?";
+            int i = jdbc.update(sql, isAdmin ? 1 : 0, tid, id);
             if (i > 0) {
                 return true;
             } else {
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             log.warn("err happened in setAdmin");
             return false;
         }
@@ -103,14 +103,14 @@ public class Teams {
      */
     public boolean removeUser(int tid, int id) {
         try {
-            String sql ="delete from u_t where team=? and user=?";
-            int i =jdbc.update(sql,tid,id);
-            if (i>0){
+            String sql = "delete from u_t where team=? and user=?";
+            int i = jdbc.update(sql, tid, id);
+            if (i > 0) {
                 return true;
-            }else {
+            } else {
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             log.warn("err happened in removeUser");
             return false;
         }
@@ -127,13 +127,13 @@ public class Teams {
         //untest
         try {
             String sql = "update team t set t.name=?,t.owner=?,t.info=? where t.tid=?";
-            int i= jdbc.update(sql,team.getName(),team.getOwner(), team.getInfo(), team.getTid());
-            if (i>0){
+            int i = jdbc.update(sql, team.getName(), team.getOwner(), team.getInfo(), team.getTid());
+            if (i > 0) {
                 return true;
-            }else {
+            } else {
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             log.warn("err happened in updateTeam");
             return false;
         }
@@ -159,7 +159,7 @@ public class Teams {
                 }
             }, keyHolder);
             return keyHolder.getKey().intValue();
-        }catch (Exception e){
+        } catch (Exception e) {
             log.warn("err happened in addTeam ");
             return -1;
         }
@@ -175,13 +175,24 @@ public class Teams {
     public boolean delTeam(int tid) {
         //todo
         try {
-            String sql2= "delete from u_t ut where ut.team =?";
-            String sql ="delete from team t where t.tid=?";
-            jdbc.update(sql2,tid);
-            jdbc.update(sql,tid);
-        }catch (Exception e){
+            String sql2 = "delete from u_t ut where ut.team =?";
+            String sql = "delete from team t where t.tid=?";
+            jdbc.update(sql2, tid);
+            jdbc.update(sql, tid);
+        } catch (Exception e) {
             log.warn("err happened in delTeam");
         }
         return false;
+    }
+
+    /**
+     * Add new member to team (normal member)
+     *
+     * @param id  user id
+     * @param tid team id
+     * @return false if member is already in team
+     */
+    public boolean addMember(int id, int tid) {
+        return true;
     }
 }
