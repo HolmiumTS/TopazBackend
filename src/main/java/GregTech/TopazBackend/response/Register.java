@@ -35,7 +35,7 @@ public class Register {
         user.setPassword((String) body.get("password"));
         int id = userDao.addUser(user);
         Map<String, Object> res = new HashMap<>();
-        res.put("result", id == -1);
+        res.put("result", id != -1);
         res.put("id", id);
         if (id == -1) {
             log.trace("Register failed. Body is {}", body);
