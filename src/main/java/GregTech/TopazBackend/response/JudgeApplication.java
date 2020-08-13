@@ -46,12 +46,16 @@ public class JudgeApplication {
             if (isAccept) {
                 apply.setStatus(ApplyStatus.ACCEPTED);
                 boolean r = teamDao.addMember(id, tid);
-                if(r){
+                if (r) {
                     log.trace("Add to team successfully.");
+                } else {
+                    log.warn("Add failed: Member exists");
+                    res.put("result", false);
+                    return res;
                 }
-                //todo
             } else {
                 apply.setStatus(ApplyStatus.REFUSED);
+                log.trace("Refuse apply successfully.");
             }
             applyDao.updateApply(apply);
             log.trace("Judge successfully.");
