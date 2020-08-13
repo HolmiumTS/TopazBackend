@@ -40,7 +40,6 @@ public class Teams {
      * @return a list of all teams that include this user, return an empty list if none
      */
     public List<Team> getTeamsById(int id) {
-        //todo
         String sql = "select t.tid, name, owner, info from team t,u_t ut where ut.user=? and ut.team=t.tid";
         List<Team> teams = jdbc.query(sql, new TeamsMapper());
 
