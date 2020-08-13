@@ -98,4 +98,14 @@ public class Teams {
         //todo
         return false;
     }
+
+    /**
+     *
+     * @param team team info, tid is set to -1
+     * @return tid, -1 if failed
+     */
+    public int addTeam(Team team) {
+        //todo
+        return -1;
+    }
 }
