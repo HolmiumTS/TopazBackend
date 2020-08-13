@@ -12,7 +12,7 @@ create table user
 );
 
 create unique index user_tel_uindex
-	on User (tel);
+	on user (tel);
 create unique index user_email_uindex
-    on User (email);
+    on user (email);
 alter table user AUTO_INCREMENT=100000000
