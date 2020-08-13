@@ -42,7 +42,7 @@ public class Teams {
     public List<Team> getTeamsById(int id) {
         //todo
 
-        String sql = "";
+        String sql = "select * from team T where ";
         List<Team> teams = jdbc.query(sql, new TeamsMapper());
 
         return new ArrayList<>();
@@ -54,7 +54,7 @@ public class Teams {
      */
     public Team getTeamByTid(int tid) {
 
-        String sql = "select * from Team T where tid=?";
+        String sql = "select * from team T where tid=?";
         try {
             Team team = jdbc.queryForObject(sql, new TeamsMapper(), tid);
             return team;
