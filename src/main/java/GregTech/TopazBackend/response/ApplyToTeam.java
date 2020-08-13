@@ -17,7 +17,6 @@ import java.util.Map;
 public class ApplyToTeam {
     private static final Logger log = LoggerFactory.getLogger(ApplyToTeam.class);
 
-
     private final Applies applyDao;
 
     @Autowired

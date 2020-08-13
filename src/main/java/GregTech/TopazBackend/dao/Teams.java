@@ -87,4 +87,15 @@ public class Teams {
         //todo
         return true;
     }
+
+    /**
+     * Update team info
+     *
+     * @param team new team info
+     * @return false if (I don't know)
+     */
+    public boolean updateTeam(Team team) {
+        //todo
+        return false;
+    }
 }
