@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ import java.util.List;
 @Repository("userDao")
 public class Users {
     private final JdbcTemplate jdbc;
-
+    private static final Logger log =LoggerFactory.getLogger(Users.class);
     @Autowired
     public Users(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
@@ -140,7 +142,6 @@ public class Users {
      * @return an empty list if no such user exists
      */
     public List<User> getNormalUserByTid(int tid) {
-        //todo
         // unTest
         String sql = "select id, name, password, email, latestdoc, tel, avatar, user, team, isadmin from user u,u_t ut where u.id=ut.user and ut.team=? ";
         return jdbc.query(sql,new UserMapper(),tid);
@@ -153,8 +154,9 @@ public class Users {
      * @return a list, (of course there is at least one admin in a team that actually exists)
      */
     public List<User> getAdminUserByTid(int tid) {
-        //todo
-        return new ArrayList<>();
+        //untest
+        String sql ="select id, name, password, email, latestdoc, tel, avatar, user, team, isadmin from user u,u_t ut where u.id=ut.user and ut.team=? and ut.isAdmin=1";
+        return jdbc.query(sql,new UserMapper(),tid);
     }
     private String I2S(int[] docs) {
         String[] bb = new String[docs.length];

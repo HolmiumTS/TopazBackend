@@ -1,6 +1,9 @@
 package GregTech.TopazBackend.dao;
 
 import GregTech.TopazBackend.metadata.Team;
+import GregTech.TopazBackend.response.CancelAdmin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,9 +15,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Repository("teamDao")
 public class Teams {
-
+    private static final Logger log =LoggerFactory.getLogger(CancelAdmin.class);
     private final JdbcTemplate jdbc;
 
     @Autowired
@@ -56,8 +60,8 @@ public class Teams {
             Team team = jdbc.queryForObject(sql, new TeamsMapper(), tid);
             return team;
         } catch (EmptyResultDataAccessException e) {
+            log.warn("Exception happened in getTeamByTid forEmptyResultDataAccess ");
             return null;
-
         }
     }
 
