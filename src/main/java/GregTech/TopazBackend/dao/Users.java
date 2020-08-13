@@ -101,13 +101,13 @@ public class Users {
             String sql = "update user u set u.id=?,u.name=?,u.password=?,u.email=?" +
                     ",u.tel=?,u.avatar=? where u.id=?";
             int i = jdbc.update(sql, user.getId(), user.getName(), user.getPassword()
-                    , user.getEmail(),user.getTel(), user.getAvatar(), user.getId());
+                    , user.getEmail(), user.getTel(), user.getAvatar(), user.getId());
             if (i > 0) {
                 return true;
             } else {
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
 
@@ -135,6 +135,7 @@ public class Users {
         }, keyHolder);
         return keyHolder.getKey().intValue();
     }
+
     /**
      * get all user who is not an admin in a team
      *
@@ -144,7 +145,7 @@ public class Users {
     public List<User> getNormalUserByTid(int tid) {
         // unTest
         String sql = "select id, name, password, email, latestdoc, tel, avatar, user, team, isadmin from user u,u_t ut where u.id=ut.user and ut.team=? ";
-        return jdbc.query(sql,new UserMapper(),tid);
+        return jdbc.query(sql, new UserMapper(), tid);
     }
 
     /**
@@ -158,6 +159,7 @@ public class Users {
         String sql ="select id, name, password, email, latestdoc, tel, avatar, user, team, isadmin from user u,u_t ut where u.id=ut.user and ut.team=? and ut.isAdmin=1";
         return jdbc.query(sql,new UserMapper(),tid);
     }
+
     private String I2S(int[] docs) {
         String[] bb = new String[docs.length];
         for (int i = 0; i < docs.length; i++) {
