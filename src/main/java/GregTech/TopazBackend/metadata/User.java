@@ -59,6 +59,11 @@ public class User {
     }
 
     public void setLatestDoc(String latestDoc) {
+        //todo 这里可能后面要改
+       if (latestDoc==null){
+           this.latestDoc=new int[0];
+           return;
+       }
         if ("".equals(latestDoc)) {
             this.latestDoc = new int[0];
             return;
