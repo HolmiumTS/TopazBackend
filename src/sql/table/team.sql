@@ -1,4 +1,4 @@
-create table Team
+create table deam
 (
     tid   int auto_increment
         primary key,

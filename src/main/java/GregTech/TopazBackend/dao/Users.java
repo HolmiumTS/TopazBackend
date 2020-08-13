@@ -50,7 +50,7 @@ public class Users {
 
     public User getById(int id) {
         try {
-            String sql = "select  * from User U where U.id=?";
+            String sql = "select  * from user u where u.id=?";
             User user = jdbc.queryForObject(sql, new UserMapper(), id);
             return user;
         } catch (EmptyResultDataAccessException e) {
@@ -65,7 +65,7 @@ public class Users {
      */
     public User getByEmail(String email) {
         try {
-            String sql = "select  * from User U where U.email=?";
+            String sql = "select  * from user u where u.email=?";
             User user = jdbc.queryForObject(sql, new UserMapper(), email);
             return user;
         } catch (EmptyResultDataAccessException e) {
@@ -80,7 +80,7 @@ public class Users {
      */
     public User getByTel(String tel) {
         try {
-            String sql = "select  * from User U where U.tel=?";
+            String sql = "select  * from user u where u.tel=?";
             User user = jdbc.queryForObject(sql, new UserMapper(), tel);
             return user;
         } catch (EmptyResultDataAccessException e) {
@@ -95,7 +95,7 @@ public class Users {
      */
     public boolean updateUser(User user) {
         try {
-            String sql = "update User u set u.id=?,u.name=?,u.password=?,u.email=?" +
+            String sql = "update user u set u.id=?,u.name=?,u.password=?,u.email=?" +
                     ",u.tel=?,u.avatar=? where u.id=?";
             int i = jdbc.update(sql, user.getId(), user.getName(), user.getPassword()
                     , user.getEmail(),user.getTel(), user.getAvatar(), user.getId());
@@ -115,7 +115,7 @@ public class Users {
      * @return user's id, -1 if failed
      */
     public int addUser(User user) {
-        String sql = "insert  into User(name,password,email,latestDoc,tel,avatar) values(?,?,?,?,?,?) ";
+        String sql = "insert  into user(name,password,email,latestDoc,tel,avatar) values(?,?,?,?,?,?) ";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int i = jdbc.update(new PreparedStatementCreator() {
             @Override

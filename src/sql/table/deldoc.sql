@@ -1,4 +1,4 @@
-create table DelDoc
+create table deldoc
 (
     did      int       not null,
     time     timestamp null,

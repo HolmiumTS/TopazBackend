@@ -1,4 +1,4 @@
-create table User
+create table user
 (
 	id int auto_increment,
 	name nvarchar(20) default '未命名' not null,
@@ -7,12 +7,12 @@ create table User
 	latestDoc nvarchar(200) null,
 	tel nvarchar(11) not null,
 	avatar nvarchar(200) null,
-	constraint User_pk
+	constraint user_pk
 		primary key (id)
 );
 
-create unique index User_tel_uindex
+create unique index user_tel_uindex
 	on User (tel);
-create unique index User_email_uindex
+create unique index user_email_uindex
     on User (email);
-alter table User AUTO_INCREMENT=100000000
+alter table user AUTO_INCREMENT=100000000

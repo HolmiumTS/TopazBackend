@@ -1,4 +1,4 @@
-create table Doc
+create table doc
 (
     did      int auto_increment
         primary key,
@@ -13,7 +13,7 @@ create table Doc
     content  longtext                               null,
     isDel    tinyint(1)                             not null,
     constraint Doc_Team_tid_fk
-        foreign key (team) references Team (tid),
+        foreign key (team) references team (tid),
     constraint Doc_User_id_fk
         foreign key (owner) references User (id)
 );
