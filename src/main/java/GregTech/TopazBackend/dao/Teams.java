@@ -198,8 +198,13 @@ public class Teams {
      */
     public boolean addMember(int id, int tid) {
         //todo
-
-        return true;
+        try {
+            String sql = "insert  into u_t(user, team, isAdmin) values(?,?,0)";
+            jdbc.update(sql,id,tid);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     /**
@@ -207,7 +212,8 @@ public class Teams {
      * @return team whose name contains the given name
      */
     public List<Team> getTeamByName(String name) {
-        //todo
-        return null;
+        //untest
+        String sql = "select tid, name, owner, info from team t where t.name like '%'+?+'%'";
+        return jdbc.query(sql, new TeamsMapper(),name);
     }
 }
