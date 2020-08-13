@@ -2,6 +2,10 @@ package GregTech.TopazBackend.dao;
 
 import GregTech.TopazBackend.metadata.Apply;
 import GregTech.TopazBackend.metadata.ApplyStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -9,7 +13,12 @@ import java.util.List;
 
 @Repository("applyDao")
 public class Applies {
-
+    private static final Logger log = LoggerFactory.getLogger(Applies.class);
+    private final JdbcTemplate jdbc;
+    @Autowired
+    public Applies(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
 
     /**
      * Get all applies a user applied (with specific apply status)

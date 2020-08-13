@@ -149,7 +149,7 @@ public class Users {
      */
     public List<User> getNormalUserByTid(int tid) {
         // unTest
-        String sql = "select id, name, password, email, latestdoc, tel, avatar, user, team, isadmin from user u,u_t ut where u.id=ut.user and ut.team=? ";
+        String sql = "select id, name, password, email, latestdoc, tel, avatar, user, team, isadmin from user u,u_t ut where u.id=ut.user and ut.team=? and ut.isAdmin=0";
         return jdbc.query(sql, new UserMapper(), tid);
     }
 
