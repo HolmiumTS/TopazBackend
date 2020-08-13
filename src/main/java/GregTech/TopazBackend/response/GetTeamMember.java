@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class GetTeamMember {
@@ -41,14 +43,16 @@ public class GetTeamMember {
         }
         int owner = team.getOwner();
         res.put("creatorId", String.valueOf(owner));
-        int[] adminId = userDao.getAdminUserByTid(tid).stream()
-                .mapToInt(User::getId)
+        List<String> adminId = userDao.getAdminUserByTid(tid).stream()
+                .map(User::getId)
                 .filter(i -> i != owner)
-                .toArray();
+                .map(String::valueOf)
+                .collect(Collectors.toList());
         res.put("adminId", adminId);
-        int[] memberId = userDao.getNormalUserByTid(tid).stream()
-                .mapToInt(User::getId)
-                .toArray();
+        List<String> memberId = userDao.getNormalUserByTid(tid).stream()
+                .map(User::getId)
+                .map(String::valueOf)
+                .collect(Collectors.toList());
         res.put("memberId", memberId);
         return res;
     }

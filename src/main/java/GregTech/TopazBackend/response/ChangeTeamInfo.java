@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 public class ChangeTeamInfo {
-    private static final Logger log = LoggerFactory.getLogger(CancelAdmin.class);
+    private static final Logger log = LoggerFactory.getLogger(ChangeTeamInfo.class);
 
     private final Teams teamDao;
 
