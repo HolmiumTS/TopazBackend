@@ -31,7 +31,7 @@ public class GetAllApplication {
         this.applyDao = applyDao;
     }
 
-    @RequestMapping(value = "/Register",
+    @RequestMapping(value = "/GetAllApplication",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         Map<String, Object> res = new HashMap<>();
