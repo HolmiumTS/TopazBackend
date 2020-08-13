@@ -88,6 +88,7 @@ public class Teams {
                 return false;
             }
         }catch (Exception e){
+            log.warn("err happened in setAdmin");
             return false;
         }
 
@@ -110,7 +111,7 @@ public class Teams {
                 return false;
             }
         }catch (Exception e){
-
+            log.warn("err happened in removeUser");
             return false;
         }
 
@@ -124,9 +125,18 @@ public class Teams {
      */
     public boolean updateTeam(Team team) {
         //untest
-        String sql = "update team t set t.name=?,t.owner=?,t.info=? where t.tid=?";
-        int i= jdbc.update(sql,team.getName(),team.getOwner(), team.getInfo(), team.getTid());
-        return false;
+        try {
+            String sql = "update team t set t.name=?,t.owner=?,t.info=? where t.tid=?";
+            int i= jdbc.update(sql,team.getName(),team.getOwner(), team.getInfo(), team.getTid());
+            if (i>0){
+                return true;
+            }else {
+                return false;
+            }
+        }catch (Exception e){
+            log.warn("err happened in updateTeam");
+            return false;
+        }
     }
 
     /**
@@ -150,6 +160,7 @@ public class Teams {
             }, keyHolder);
             return keyHolder.getKey().intValue();
         }catch (Exception e){
+            log.warn("err happened in addTeam ");
             return -1;
         }
 
