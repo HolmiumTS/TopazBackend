@@ -1,6 +1,7 @@
 package GregTech.TopazBackend.response;
 
 import GregTech.TopazBackend.dao.Applies;
+import GregTech.TopazBackend.dao.Teams;
 import GregTech.TopazBackend.metadata.Apply;
 import GregTech.TopazBackend.metadata.ApplyStatus;
 import org.slf4j.Logger;
@@ -17,11 +18,14 @@ import java.util.Map;
 @RestController
 public class JudgeApplication {
     private static final Logger log = LoggerFactory.getLogger(JudgeApplication.class);
+
     private final Applies applyDao;
+    private final Teams teamDao;
 
     @Autowired
-    public JudgeApplication(Applies applyDao) {
+    public JudgeApplication(Applies applyDao, Teams teamDao) {
         this.applyDao = applyDao;
+        this.teamDao = teamDao;
     }
 
     @RequestMapping(value = "/JudgeApplication",
@@ -41,7 +45,11 @@ public class JudgeApplication {
         } else {
             if (isAccept) {
                 apply.setStatus(ApplyStatus.ACCEPTED);
-                //todo add to the team
+                boolean r = teamDao.addMember(id, tid);
+                if(r){
+                    log.trace("Add to team successfully.");
+                }
+                //todo
             } else {
                 apply.setStatus(ApplyStatus.REFUSED);
             }
