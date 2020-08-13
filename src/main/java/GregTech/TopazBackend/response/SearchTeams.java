@@ -24,7 +24,7 @@ public class SearchTeams {
         this.teamDao = teamDao;
     }
 
-    @RequestMapping(value = "/Login",
+    @RequestMapping(value = "/SearchTeams",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         int id = Integer.parseInt((String) body.get("id"));
