@@ -2,7 +2,6 @@ package GregTech.TopazBackend.response;
 
 import GregTech.TopazBackend.dao.Applies;
 import GregTech.TopazBackend.dao.Teams;
-import GregTech.TopazBackend.dao.Users;
 import GregTech.TopazBackend.metadata.Apply;
 import GregTech.TopazBackend.metadata.ApplyStatus;
 import GregTech.TopazBackend.metadata.Team;
@@ -63,7 +62,7 @@ public class SearchTeams {
 
     private Map<String, Object> collectData(Team team) {
         Map<String, Object> map = new HashMap<>();
-        map.put("id", team.getTid());
+        map.put("id", String.valueOf(team.getTid()));
         map.put("name", team.getName());
         map.put("info", team.getInfo());
         return map;

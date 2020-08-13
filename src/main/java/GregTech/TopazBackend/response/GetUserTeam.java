@@ -38,7 +38,7 @@ public class GetUserTeam {
 
     private Map<String, Object> collectData(Team team) {
         Map<String, Object> map = new HashMap<>();
-        map.put("id", team.getTid());
+        map.put("id", String.valueOf(team.getTid()));
         map.put("name", team.getName());
         return map;
     }
