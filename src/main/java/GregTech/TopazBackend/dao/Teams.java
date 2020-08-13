@@ -7,9 +7,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -118,7 +123,9 @@ public class Teams {
      * @return false if (I don't know)
      */
     public boolean updateTeam(Team team) {
-        //todo
+        //untest
+        String sql = "update team t set t.name=?,t.owner=?,t.info=? where t.tid=?";
+        int i= jdbc.update(sql,team.getName(),team.getOwner(), team.getInfo(), team.getTid());
         return false;
     }
 
@@ -127,8 +134,25 @@ public class Teams {
      * @return tid, -1 if failed
      */
     public int addTeam(Team team) {
-        //todo
-        return -1;
+        //untest
+        try {
+            String sql = "insert  into team( name, owner, info) values(?,?,?) ";
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            int i = jdbc.update(new PreparedStatementCreator() {
+                @Override
+                public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                    PreparedStatement ps = con.prepareStatement(sql, new String[]{"tid"});
+                    ps.setString(1, team.getName());
+                    ps.setInt(2, team.getOwner());
+                    ps.setString(3, team.getInfo());
+                    return ps;
+                }
+            }, keyHolder);
+            return keyHolder.getKey().intValue();
+        }catch (Exception e){
+            return -1;
+        }
+
     }
 
     /**
@@ -139,6 +163,14 @@ public class Teams {
      */
     public boolean delTeam(int tid) {
         //todo
+        try {
+            String sql2= "delete from u_t ut where ut.team =?";
+            String sql ="delete from team t where t.tid=?";
+            jdbc.update(sql2,tid);
+            jdbc.update(sql,tid);
+        }catch (Exception e){
+            log.warn("err happened in delTeam");
+        }
         return false;
     }
 }

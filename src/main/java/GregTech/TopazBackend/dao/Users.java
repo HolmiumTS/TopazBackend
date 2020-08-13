@@ -118,22 +118,27 @@ public class Users {
      * @return user's id, -1 if failed
      */
     public int addUser(User user) {
-        String sql = "insert  into user(name,password,email,latestDoc,tel,avatar) values(?,?,?,?,?,?) ";
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        int i = jdbc.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
-                ps.setString(1, user.getName());
-                ps.setString(2, user.getPassword());
-                ps.setString(3, user.getEmail());
-                ps.setString(4, null);
-                ps.setString(5, user.getTel());
-                ps.setString(6, user.getAvatar());
-                return ps;
-            }
-        }, keyHolder);
-        return keyHolder.getKey().intValue();
+        try {
+
+            String sql = "insert  into user(name,password,email,latestDoc,tel,avatar) values(?,?,?,?,?,?) ";
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            int i = jdbc.update(new PreparedStatementCreator() {
+                @Override
+                public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                    PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
+                    ps.setString(1, user.getName());
+                    ps.setString(2, user.getPassword());
+                    ps.setString(3, user.getEmail());
+                    ps.setString(4, null);
+                    ps.setString(5, user.getTel());
+                    ps.setString(6, user.getAvatar());
+                    return ps;
+                }
+            }, keyHolder);
+            return keyHolder.getKey().intValue();
+        }catch (Exception e){
+            return -1;
+        }
     }
 
     /**
