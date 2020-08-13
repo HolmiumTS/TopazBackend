@@ -49,7 +49,7 @@ public class GetAllApplication {
 
     private Map<String, Object> collectData(User user) {
         Map<String, Object> map = new HashMap<>();
-        map.put("id", user.getId());
+        map.put("id", String.valueOf(user.getId()));
         map.put("username", user.getName());
         map.put("avatar", user.getAvatar());
         return map;

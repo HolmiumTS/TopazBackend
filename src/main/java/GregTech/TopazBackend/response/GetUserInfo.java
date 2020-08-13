@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 public class GetUserInfo {
-    private static final Logger log = LoggerFactory.getLogger(GetTeamInfo.class);
+    private static final Logger log = LoggerFactory.getLogger(GetUserInfo.class);
 
     private final Users userDao;
 

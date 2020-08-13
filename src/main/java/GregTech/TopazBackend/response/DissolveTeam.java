@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 public class DissolveTeam {
-    private static final Logger log = LoggerFactory.getLogger(CreateTeam.class);
+    private static final Logger log = LoggerFactory.getLogger(DissolveTeam.class);
 
     private final Teams teamDao;
 

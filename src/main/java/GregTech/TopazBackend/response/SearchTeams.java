@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @RestController
 public class SearchTeams {
-    private static final Logger log = LoggerFactory.getLogger(Login.class);
+    private static final Logger log = LoggerFactory.getLogger(SearchTeams.class);
 
     private final Teams teamDao;
     private final Applies applyDao;
