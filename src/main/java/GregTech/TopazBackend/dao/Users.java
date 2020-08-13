@@ -49,6 +49,7 @@ public class Users {
      */
 
     public User getById(int id) {
+        // Tested
         try {
             String sql = "select  * from user u where u.id=?";
             User user = jdbc.queryForObject(sql, new UserMapper(), id);
@@ -64,7 +65,7 @@ public class Users {
      * @return null if no such email
      */
     public User getByEmail(String email) {
-        try {
+        try {//Tested
             String sql = "select  * from user u where u.email=?";
             User user = jdbc.queryForObject(sql, new UserMapper(), email);
             return user;
@@ -79,7 +80,7 @@ public class Users {
      * @return null if no such email
      */
     public User getByTel(String tel) {
-        try {
+        try {//Tested
             String sql = "select  * from user u where u.tel=?";
             User user = jdbc.queryForObject(sql, new UserMapper(), tel);
             return user;
@@ -132,10 +133,17 @@ public class Users {
         }, keyHolder);
         return keyHolder.getKey().intValue();
     }
+    /**
+     * get all user who is not an admin in a team
+     *
+     * @param tid id of the team
+     * @return an empty list if no such user exists
+     */
     public List<User> getNormalUserByTid(int tid) {
         //todo
-
-        return new ArrayList<>();
+        // unTest
+        String sql = "select id, name, password, email, latestdoc, tel, avatar, user, team, isadmin from user u,u_t ut where u.id=ut.user and ut.team=? ";
+        return jdbc.query(sql,new UserMapper(),tid);
     }
 
     /**
@@ -158,11 +166,5 @@ public class Users {
         return s;
     }
 
-    /**
-     * get all user who is not an admin in a team
-     *
-     * @param tid id of the team
-     * @return an empty list if no such user exists
-     */
 
 }
