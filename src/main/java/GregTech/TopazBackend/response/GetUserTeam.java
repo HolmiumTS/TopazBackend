@@ -28,12 +28,14 @@ public class GetUserTeam {
 
     @RequestMapping(value = "/GetUserTeam",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public List<Map<String, Object>> response(@RequestBody Map<String, Object> body) {
+    public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         int id = Integer.parseInt((String) body.get("id"));
         List<Team> teamsById = teamDao.getTeamsById(id);
-        List<Map<String, Object>> result = teamsById.stream().map(this::collectData).collect(Collectors.toList());
-        log.trace("Result is {}", result);
-        return result;
+        List<Map<String, Object>> teams = teamsById.stream().map(this::collectData).collect(Collectors.toList());
+        log.trace("Result is {}", teams);
+        Map<String, Object> res = new HashMap<>();
+        res.put("teams", teams);
+        return res;
     }
 
     private Map<String, Object> collectData(Team team) {
