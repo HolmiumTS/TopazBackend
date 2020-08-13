@@ -23,7 +23,7 @@ import java.util.List;
 
 @Repository("teamDao")
 public class Teams {
-    private static final Logger log = LoggerFactory.getLogger(CancelAdmin.class);
+    private static final Logger log = LoggerFactory.getLogger(Teams.class);
     private final JdbcTemplate jdbc;
 
     @Autowired
@@ -195,5 +195,14 @@ public class Teams {
     public boolean addMember(int id, int tid) {
         //todo
         return true;
+    }
+
+    /**
+     * @param name team name
+     * @return team whose name contains the given name
+     */
+    public List<Team> getTeamByName(String name) {
+        //todo
+        return null;
     }
 }

@@ -40,7 +40,7 @@ public class CreateTeam {
             res.put("result", false);
         } else {
             log.trace("Create successfully, tid is {}", tid);
-            res.put("teamId", tid);
+            res.put("teamId", String.valueOf(tid));
             res.put("result", true);
         }
         return res;
