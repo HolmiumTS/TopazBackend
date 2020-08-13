@@ -42,8 +42,7 @@ public class Teams {
     public List<Team> getTeamsById(int id) {
         String sql = "select t.tid, name, owner, info from team t,u_t ut where ut.user=? and ut.team=t.tid";
         List<Team> teams = jdbc.query(sql, new TeamsMapper());
-
-        return new ArrayList<>();
+        return teams;
     }
 
     /**
@@ -71,8 +70,18 @@ public class Teams {
      * @return false if the admin is the owner
      */
     public boolean setAdmin(int tid, int id, boolean isAdmin) {
-        //todo
-        return true;
+        try {
+            String sql="update u_t ut set ut.isAdmin=? where team=? and user=?";
+            int i=jdbc.update(sql,isAdmin?1:0,tid,id);
+            if (i > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }catch (Exception e){
+            return false;
+        }
+
     }
 
     /**
@@ -83,8 +92,19 @@ public class Teams {
      * @return false if the user is the owner of the team (and do not remove this user)
      */
     public boolean removeUser(int tid, int id) {
-        //todo
-        return true;
+        try {
+            String sql ="delete from u_t where team=? and user=?";
+            int i =jdbc.update(sql,tid,id);
+            if (i>0){
+                return true;
+            }else {
+                return false;
+            }
+        }catch (Exception e){
+
+            return false;
+        }
+
     }
 
     /**
