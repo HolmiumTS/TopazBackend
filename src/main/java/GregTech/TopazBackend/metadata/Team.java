@@ -37,4 +37,14 @@ public class Team {
     public void setInfo(String info) {
         this.info = info;
     }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "tid=" + tid +
+                ", name='" + name + '\'' +
+                ", owner=" + owner +
+                ", info='" + info + '\'' +
+                '}';
+    }
 }

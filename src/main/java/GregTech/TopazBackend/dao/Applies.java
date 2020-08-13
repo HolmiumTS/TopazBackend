@@ -37,7 +37,7 @@ public class Applies {
             apply.setStatus(ApplyStatus.values()[rs.getInt("status")]);
             apply.setTime(rs.getTimestamp("time").getTime());
             apply.setTid(rs.getInt("tid"));
-            return null;
+            return apply;
         }
     }
 
@@ -67,7 +67,14 @@ public class Applies {
     public List<Apply> getApplyByTid(int tid, ApplyStatus status) {
         try {
             String sql = "select aid, time, id, tid, status from apply a where a.tid = ? and a.status = ?";
-            return jdbc.query(sql,new ApplyMapper(),tid,status.ordinal());
+            List<Apply> applies= jdbc.query(sql,new ApplyMapper(),tid,status.ordinal());
+            if (applies.isEmpty()){
+                log.warn("applies is empty");
+            }else {
+                log.warn("applies is not empty");
+                log.warn(applies.toString());
+            }
+            return  applies;
         }catch (Exception e){
             return null;
         }

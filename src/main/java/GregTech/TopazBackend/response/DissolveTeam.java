@@ -27,7 +27,7 @@ public class DissolveTeam {
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         Map<String, Object> res = new HashMap<>();
-        int tid = Integer.parseInt((String) body.get("teamId"));
+        int tid = Integer.parseInt((String) body.get("id"));
         boolean r = teamDao.delTeam(tid);
         if (r) {
             log.trace("Delete successfully.");

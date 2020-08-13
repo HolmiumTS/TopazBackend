@@ -39,6 +39,7 @@ public class SearchTeams {
         if (key.matches("[0-9]{1,9}")) {
             int tid = Integer.parseInt(key);
             Team t = teamDao.getTeamByTid(tid);
+            // log.warn(t.toString()+"aaaaa");
             if (t != null) {
                 teamList.add(t);
             }

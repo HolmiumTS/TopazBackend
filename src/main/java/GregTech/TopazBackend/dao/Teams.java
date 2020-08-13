@@ -177,16 +177,17 @@ public class Teams {
      * @return true
      */
     public boolean delTeam(int tid) {
-        //todo
+        //untest
         try {
             String sql2 = "delete from u_t ut where ut.team =?";
             String sql = "delete from team t where t.tid=?";
             jdbc.update(sql2, tid);
             jdbc.update(sql, tid);
+            return true;
         } catch (Exception e) {
             log.warn("err happened in delTeam");
+            return false;
         }
-        return false;
     }
 
     /**
@@ -213,7 +214,7 @@ public class Teams {
      */
     public List<Team> getTeamByName(String name) {
         //untest
-        String sql = "select tid, name, owner, info from team t where t.name like '%'+?+'%'";
-        return jdbc.query(sql, new TeamsMapper(),name);
+        String sql = "select tid, name, owner, info from team t where t.name like ?";
+        return jdbc.query(sql, new TeamsMapper(),"%"+name+"%");
     }
 }
