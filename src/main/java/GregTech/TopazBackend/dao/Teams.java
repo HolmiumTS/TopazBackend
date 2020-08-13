@@ -119,12 +119,22 @@ public class Teams {
     }
 
     /**
-     *
      * @param team team info, tid is set to -1
      * @return tid, -1 if failed
      */
     public int addTeam(Team team) {
         //todo
         return -1;
+    }
+
+    /**
+     * Delete team, including all docs and all u_t relation
+     *
+     * @param tid team id
+     * @return true
+     */
+    public boolean delTeam(int tid) {
+        //todo
+        return false;
     }
 }
