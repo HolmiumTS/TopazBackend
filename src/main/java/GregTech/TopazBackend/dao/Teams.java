@@ -158,7 +158,11 @@ public class Teams {
                     return ps;
                 }
             }, keyHolder);
-            return keyHolder.getKey().intValue();
+            int id=keyHolder.getKey().intValue();
+            String sql2 ="insert into u_t (user, team, isAdmin) values (?,?,?)";
+            //set creator as admin of the created team
+            jdbc.update(sql2,team.getOwner(),id,1);
+            return id;
         } catch (Exception e) {
             log.warn("err happened in addTeam ");
             return -1;
