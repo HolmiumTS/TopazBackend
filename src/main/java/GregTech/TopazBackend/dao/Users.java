@@ -10,10 +10,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,15 +94,20 @@ public class Users {
      * @return false if email or tel is duplicate, otherwise true
      */
     public boolean updateUser(User user) {
-        String sql = "update User u set u.id=?,u.name=?,u.password=?,u.email=?" +
-                ",u.latestDoc=?,u.tel=?,u.avatar=? where u.id=?";
-        int i = jdbc.update(sql, user.getId(), user.getName(), user.getPassword()
-                , user.getEmail(), user.getLatestDoc(), user.getTel(), user.getAvatar(), user.getId());
-        if (i > 0) {
-            return true;
-        } else {
+        try {
+            String sql = "update User u set u.id=?,u.name=?,u.password=?,u.email=?" +
+                    ",u.tel=?,u.avatar=? where u.id=?";
+            int i = jdbc.update(sql, user.getId(), user.getName(), user.getPassword()
+                    , user.getEmail(),user.getTel(), user.getAvatar(), user.getId());
+            if (i > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }catch (Exception e){
             return false;
         }
+
     }
 
     /**
@@ -122,7 +124,7 @@ public class Users {
                 ps.setString(1, user.getName());
                 ps.setString(2, user.getPassword());
                 ps.setString(3, user.getEmail());
-                ps.setString(4, I2S(user.getLatestDoc()));
+                ps.setString(4, null);
                 ps.setString(5, user.getTel());
                 ps.setString(6, user.getAvatar());
                 return ps;
@@ -130,7 +132,22 @@ public class Users {
         }, keyHolder);
         return keyHolder.getKey().intValue();
     }
+    public List<User> getNormalUserByTid(int tid) {
+        //todo
 
+        return new ArrayList<>();
+    }
+
+    /**
+     * get all admin in a team
+     *
+     * @param tid id of the team
+     * @return a list, (of course there is at least one admin in a team that actually exists)
+     */
+    public List<User> getAdminUserByTid(int tid) {
+        //todo
+        return new ArrayList<>();
+    }
     private String I2S(int[] docs) {
         String[] bb = new String[docs.length];
         for (int i = 0; i < docs.length; i++) {
@@ -147,19 +164,5 @@ public class Users {
      * @param tid id of the team
      * @return an empty list if no such user exists
      */
-    public List<User> getNormalUserByTid(int tid) {
-        //todo
-        return new ArrayList<>();
-    }
 
-    /**
-     * get all admin in a team
-     *
-     * @param tid id of the team
-     * @return a list, (of course there is at least one admin in a team that actually exists)
-     */
-    public List<User> getAdminUserByTid(int tid) {
-        //todo
-        return new ArrayList<>();
-    }
 }
