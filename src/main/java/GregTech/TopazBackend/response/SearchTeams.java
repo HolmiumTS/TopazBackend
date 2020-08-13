@@ -31,7 +31,7 @@ public class SearchTeams {
 
     @RequestMapping(value = "/SearchTeams",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public List<Map<String, Object>> response(@RequestBody Map<String, Object> body) {
+    public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         int id = Integer.parseInt((String) body.get("id"));
         String key = (String) body.get("keyword");
         List<Team> teamList = new ArrayList<>();
@@ -52,11 +52,13 @@ public class SearchTeams {
                 .map(Apply::getTid)
                 .collect(Collectors.toSet())
         );
-        List<Map<String, Object>> res = teamList.stream()
+        List<Map<String, Object>> teams = teamList.stream()
                 .dropWhile(team -> abortSet.contains(team.getTid()))
                 .map(this::collectData)
                 .collect(Collectors.toList());
-        log.trace("Team list is {}", res);
+        log.trace("Team list is {}", teams);
+        Map<String, Object> res = new HashMap<>();
+        res.put("teams", teams);
         return res;
     }
 
