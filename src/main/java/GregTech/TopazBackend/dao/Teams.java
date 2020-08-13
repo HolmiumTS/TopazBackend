@@ -86,4 +86,25 @@ public class Teams {
         //todo
         return true;
     }
+
+    /**
+     * Update team info
+     *
+     * @param team new team info
+     * @return false if (I don't know)
+     */
+    public boolean updateTeam(Team team) {
+        //todo
+        return false;
+    }
+
+    /**
+     *
+     * @param team team info, tid is set to -1
+     * @return tid, -1 if failed
+     */
+    public int addTeam(Team team) {
+        //todo
+        return -1;
+    }
 }
