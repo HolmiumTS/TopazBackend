@@ -98,13 +98,13 @@ public class Users {
             String sql = "update user u set u.id=?,u.name=?,u.password=?,u.email=?" +
                     ",u.tel=?,u.avatar=? where u.id=?";
             int i = jdbc.update(sql, user.getId(), user.getName(), user.getPassword()
-                    , user.getEmail(),user.getTel(), user.getAvatar(), user.getId());
+                    , user.getEmail(), user.getTel(), user.getAvatar(), user.getId());
             if (i > 0) {
                 return true;
             } else {
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
 
@@ -132,6 +132,7 @@ public class Users {
         }, keyHolder);
         return keyHolder.getKey().intValue();
     }
+
     public List<User> getNormalUserByTid(int tid) {
         //todo
 
@@ -148,6 +149,7 @@ public class Users {
         //todo
         return new ArrayList<>();
     }
+
     private String I2S(int[] docs) {
         String[] bb = new String[docs.length];
         for (int i = 0; i < docs.length; i++) {
