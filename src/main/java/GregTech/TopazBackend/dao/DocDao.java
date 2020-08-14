@@ -11,11 +11,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import java.util.Date;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 @Repository("docDao")
 public class DocDao {
@@ -69,26 +67,55 @@ public class DocDao {
      * @param doc new doc, id is set to -1
      * @return id of the doc, -1 if failed
      */
-   /* public int addDoc(Doc doc) {
-        String sql="";
-        KeyHolder keyHolder=new GeneratedKeyHolder();
-        int i =jdbc.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps =con.prepareStatement(sql, new String[]{"did"});
-                ;
+    public int addDoc(Doc doc) {
+        String sql="insert into doc(name, owner, team, view, edit, `create`, `update`, count, content, isdel) values(?,?,?,?,?,?,?,?,?,?)";
+        try {
+            KeyHolder keyHolder=new GeneratedKeyHolder();
+            int i =jdbc.update(new PreparedStatementCreator() {
+                @Override
+                public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                    PreparedStatement ps =con.prepareStatement(sql, new String[]{"did"});
+                    ps.setString(1,doc.getName());
+                    ps.setInt(2,doc.getOwner());
+                    ps.setInt(3,doc.getTeam());
+                    ps.setBoolean(4,doc.isView());
+                    ps.setBoolean(5,doc.isEdit());
+                    ps.setTimestamp(6,new Timestamp(doc.getCreate()));
+                    ps.setTimestamp(7,new Timestamp(doc.getUpdate()));
+                    ps.setInt(8,doc.getCount());
+                    ps.setString(9,doc.getContent());
+                    ps.setBoolean(10,doc.isDel());
+                    return ps;
+                }
+            },keyHolder);
+            return keyHolder.getKey().intValue();
+        }catch (Exception e){
+            log.error("error happened in add Doc");
+            return -1;
+        }
 
-            };
-        });
-        return -1;
-    }*/
+
+    }
 
     /**
      * @param doc new doc
      * @return false if failed
      */
     public boolean updateDoc(Doc doc) {
-        return true;
+        try {
+            String sql ="update  doc d set d.name=?,d.owner=?,d.team=?,d.view=?,d.edit=?,d.`update`=?,d.count=?,d.content=?,d.isdel=? ";
+
+            int i=jdbc.update(sql,doc.getName(),doc.getOwner(),doc.getTeam(),doc.isView(),doc.isEdit(),
+                    new Timestamp(new java.util.Date().getTime()), doc.getCount()+1,doc.getContent(),doc.isDel());
+            if (i>0){
+                return true;
+            }else {
+                return false;
+            }
+        }catch (Exception e){
+         log.warn("Exception happened in updateDoc");
+            return false;
+        }
     }
 
     /**
@@ -103,6 +130,14 @@ public class DocDao {
      * @see #updateDoc(Doc)
      */
     public boolean delDoc(int did) {
-        return true;
+        try {
+            String sql="delete  from doc d where  d.did=?";
+            jdbc.update(sql,did);
+            return true;
+        }catch (Exception e){
+            log.warn("err happened in delDoc");
+            return false;
+        }
+
     }
 }
