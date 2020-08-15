@@ -80,8 +80,8 @@ public class DocDao {
                     ps.setInt(3,doc.getTeam());
                     ps.setBoolean(4,doc.isView());
                     ps.setBoolean(5,doc.isEdit());
-                    ps.setTimestamp(6,new Timestamp(doc.getCreate()));
-                    ps.setTimestamp(7,new Timestamp(doc.getUpdate()));
+                    ps.setTimestamp(6,new Timestamp(new Date().getTime()));
+                    ps.setTimestamp(7,new Timestamp(new Date().getTime()));
                     ps.setInt(8,doc.getCount());
                     ps.setString(9,doc.getContent());
                     ps.setBoolean(10,doc.isDel());

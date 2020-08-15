@@ -1,4 +1,4 @@
-package GregTech.TopazBackend.response;
+package GregTech.TopazBackend.response.Team;
 
 import GregTech.TopazBackend.dao.Teams;
 import GregTech.TopazBackend.metadata.Team;
@@ -45,5 +45,6 @@ public class GetUserTeam {
         map.put("name", team.getName());
         return map;
     }
+
 }
 

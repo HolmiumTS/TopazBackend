@@ -1,4 +1,4 @@
-package GregTech.TopazBackend.response;
+package GregTech.TopazBackend.response.Team;
 
 import GregTech.TopazBackend.dao.Teams;
 import GregTech.TopazBackend.metadata.Team;
@@ -14,36 +14,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class ChangeTeamInfo {
-    private static final Logger log = LoggerFactory.getLogger(ChangeTeamInfo.class);
+public class CreateTeam {
+    private static final Logger log = LoggerFactory.getLogger(CreateTeam.class);
 
     private final Teams teamDao;
 
     @Autowired
-    public ChangeTeamInfo(Teams teamDao) {
+    public CreateTeam(Teams teamDao) {
         this.teamDao = teamDao;
     }
 
-    @RequestMapping(value = "/ChangeTeamInfo",
+    @RequestMapping(value = "/CreateTeam",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         Map<String, Object> res = new HashMap<>();
-        int tid = Integer.parseInt((String) body.get("teamId"));
-        Team team = teamDao.getTeamByTid(tid);
-        if (team == null) {
-            log.warn("Change failed: No such team");
+        int owner = Integer.parseInt((String) body.get("id"));
+        Team team = new Team();
+        team.setOwner(owner);
+        team.setName((String) body.get("teamName"));
+        team.setInfo((String) body.get("teamInfo"));
+        int tid = teamDao.addTeam(team);
+        if (tid == -1) {
+            log.warn("Create failed.");
             res.put("result", false);
         } else {
-            team.setInfo((String) body.get("teamInfo"));
-            team.setName((String) body.get("teamName"));
-            boolean r = teamDao.updateTeam(team);
-            if (r) {
-                log.trace("Change successfully.");
-                res.put("result", true);
-            } else {
-                log.warn("Change failed: Unknown error.");
-                res.put("result", false);
-            }
+            log.trace("Create successfully, tid is {}", tid);
+            res.put("teamId", String.valueOf(tid));
+            res.put("result", true);
         }
         return res;
     }

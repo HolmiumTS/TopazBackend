@@ -1,4 +1,4 @@
-package GregTech.TopazBackend.response;
+package GregTech.TopazBackend.response.Team;
 
 import GregTech.TopazBackend.dao.Applies;
 import GregTech.TopazBackend.dao.Teams;

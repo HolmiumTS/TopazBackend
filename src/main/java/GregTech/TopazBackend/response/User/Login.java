@@ -1,4 +1,4 @@
-package GregTech.TopazBackend.response;
+package GregTech.TopazBackend.response.User;
 
 import GregTech.TopazBackend.dao.Users;
 import GregTech.TopazBackend.metadata.User;

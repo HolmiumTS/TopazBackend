@@ -1,4 +1,4 @@
-package GregTech.TopazBackend.response;
+package GregTech.TopazBackend.response.Team;
 
 import GregTech.TopazBackend.dao.Teams;
 import GregTech.TopazBackend.metadata.Team;
@@ -14,39 +14,37 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class GetTeamInfo {
-    private static final Logger log = LoggerFactory.getLogger(GetTeamInfo.class);
+public class ChangeTeamInfo {
+    private static final Logger log = LoggerFactory.getLogger(ChangeTeamInfo.class);
 
     private final Teams teamDao;
 
     @Autowired
-    public GetTeamInfo(Teams teamDao) {
+    public ChangeTeamInfo(Teams teamDao) {
         this.teamDao = teamDao;
     }
 
-    @RequestMapping(value = "/GetTeamInfo",
+    @RequestMapping(value = "/ChangeTeamInfo",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
+        Map<String, Object> res = new HashMap<>();
         int tid = Integer.parseInt((String) body.get("teamId"));
-        log.trace("Team id is {}", tid);
-        Map<String, Object> result = new HashMap<>();
         Team team = teamDao.getTeamByTid(tid);
         if (team == null) {
-            log.warn("No such team.");
-            result.put("result", false);
+            log.warn("Change failed: No such team");
+            res.put("result", false);
         } else {
-            result.putAll(collectData(team));
-            log.trace("Get successfully.");
-            result.put("result", true);
+            team.setInfo((String) body.get("teamInfo"));
+            team.setName((String) body.get("teamName"));
+            boolean r = teamDao.updateTeam(team);
+            if (r) {
+                log.trace("Change successfully.");
+                res.put("result", true);
+            } else {
+                log.warn("Change failed: Unknown error.");
+                res.put("result", false);
+            }
         }
-        return result;
-    }
-
-    private Map<String, Object> collectData(Team team) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("creatorId", String.valueOf(team.getOwner()));
-        map.put("teamName", team.getName());
-        map.put("teamInfo", team.getInfo());
-        return map;
+        return res;
     }
 }

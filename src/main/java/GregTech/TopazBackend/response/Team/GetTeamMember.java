@@ -1,4 +1,4 @@
-package GregTech.TopazBackend.response;
+package GregTech.TopazBackend.response.Team;
 
 import GregTech.TopazBackend.dao.Teams;
 import GregTech.TopazBackend.dao.Users;
@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.naming.event.ObjectChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 public class GetTeamMember {
@@ -52,8 +50,9 @@ public class GetTeamMember {
         }
         List<User> adminUser=userDao.getAdminUserByTid(tid);
         for (User user : adminUser) {
-            memberList.add(addType((collectData(user)),"1"));
+            if (user.getId()!=team.getOwner()) memberList.add(addType((collectData(user)),"1"));
         }
+        log.warn("teamMemeber is {}",memberList);
         res.put("memberInfo",memberList);
         res.put("result", true);
         return res;
