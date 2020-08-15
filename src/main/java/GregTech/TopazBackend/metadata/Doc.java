@@ -6,7 +6,7 @@ public class Doc {
     int owner;
     int team;
     boolean view;
-    boolean edit;
+    int edit;
     long create;
     long update;
     int count;
@@ -53,11 +53,11 @@ public class Doc {
         this.view = view;
     }
 
-    public boolean isEdit() {
+    public int getEdit() {
         return edit;
     }
 
-    public void setEdit(boolean edit) {
+    public void setEdit(int edit) {
         this.edit = edit;
     }
 

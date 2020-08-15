@@ -6,12 +6,12 @@ create table doc
     owner    int                                    not null,
     team     int                                    not null,
     view     tinyint(1)                             not null,
-    edit     tinyint(1)                             not null,
+    edit     int                                    not null,
     `create` timestamp                              not null,
     `update` timestamp                              null,
     count    int                      default 0     null,
     content  longtext                               null,
-    isDel    tinyint(1)                             not null,
+    isdel    tinyint(1)                             not null,
     constraint doc_team_tid_fk
         foreign key (team) references team (tid),
     constraint doc_user_id_fk

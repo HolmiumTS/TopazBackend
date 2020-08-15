@@ -38,16 +38,22 @@ public class GetRecentFile {
     }
 
     // TODO: 2020/8/15
-   /* private Map<String ,Object> colletData (Doc doc){
+    private Map<String ,Object> colletData (Doc doc,int id){
+        boolean inside =false;
         Map<String ,Object>map=new HashMap<>();
         map.put("id",String.valueOf(doc.getDid()));
         map.put("name",doc.getName());
         map.put("username",userDao.getById(doc.getOwner()).getName());
         map.put("team",String.valueOf(doc.getTeam()));
         map.put("time",String.valueOf(doc.getUpdate()));
-        map.put("collected",String.valueOf())
-
+        for (int s : userDao.getById(id).getCollectedDoc()) {
+            if (s==doc.getDid()){
+              inside=true;
+            }
+        }
+        map.put("collected",inside?"已收藏":"未收藏");
+       // map.put("view")
         return null;
-    }*/
+    }
 
 }

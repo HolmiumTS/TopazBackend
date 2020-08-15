@@ -38,7 +38,7 @@ public class DocDao {
             doc.setOwner(rs.getInt("owner"));
             doc.setTeam(rs.getInt("team"));
             doc.setView(rs.getBoolean("view"));
-            doc.setEdit(rs.getBoolean("edit"));
+            doc.setEdit(rs.getInt("edit"));
             doc.setCreate(rs.getTimestamp("create").getTime());
             doc.setUpdate(rs.getTimestamp("update").getTime());
             doc.setCount(rs.getInt("count"));
@@ -79,7 +79,7 @@ public class DocDao {
                     ps.setInt(2,doc.getOwner());
                     ps.setInt(3,doc.getTeam());
                     ps.setBoolean(4,doc.isView());
-                    ps.setBoolean(5,doc.isEdit());
+                    ps.setInt(5,doc.getEdit());
                     ps.setTimestamp(6,new Timestamp(new Date().getTime()));
                     ps.setTimestamp(7,new Timestamp(new Date().getTime()));
                     ps.setInt(8,doc.getCount());
@@ -105,7 +105,7 @@ public class DocDao {
         try {
             String sql ="update  doc d set d.name=?,d.owner=?,d.team=?,d.view=?,d.edit=?,d.`update`=?,d.count=?,d.content=?,d.isdel=? ";
 
-            int i=jdbc.update(sql,doc.getName(),doc.getOwner(),doc.getTeam(),doc.isView(),doc.isEdit(),
+            int i=jdbc.update(sql,doc.getName(),doc.getOwner(),doc.getTeam(),doc.isView(),doc.getEdit(),
                     new Timestamp(new java.util.Date().getTime()), doc.getCount()+1,doc.getContent(),doc.isDel());
             if (i>0){
                 return true;
