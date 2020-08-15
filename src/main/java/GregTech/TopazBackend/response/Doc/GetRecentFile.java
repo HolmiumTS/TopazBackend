@@ -29,12 +29,20 @@ public class GetRecentFile {
     @RequestMapping(value ="/GetRecentFile"
                         ,method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body){
-        List<Doc> docs=new ArrayList<>();
+        List<Map<String,Object>> docs=new ArrayList<>();
+        Map<String ,Object> res=new HashMap<>();
         int[] dids =  userDao.getById(Integer.parseInt( (String)body.get("id"))).getLatestDoc();
-        for (int did : dids) {
-            docDao.getDocByDid(did);
+        int id=Integer.parseInt((String)body.get("id"));
+        if (dids.length==0){
+            logger.warn("{} has no recent file",id);
+            return null;
         }
-                return null;
+        for (int did : dids) {
+            docs.add(colletData(docDao.getDocByDid(did),id));
+        }
+        res.put("files",docs);
+        logger.warn("res is {}",res);
+        return res;
     }
 
     // TODO: 2020/8/15
@@ -52,8 +60,9 @@ public class GetRecentFile {
             }
         }
         map.put("collected",inside?"已收藏":"未收藏");
-       // map.put("view")
-        return null;
+        map.put("view",doc.isView()?1:0);
+        map.put("edit",doc.getEdit());
+        return map;
     }
 
 }

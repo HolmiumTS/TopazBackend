@@ -25,16 +25,18 @@ public class NewFile {
     @RequestMapping(value = "/NewFile",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String,Object> response(@RequestBody Map<String,Object>body){
-        //@// TODO: 2020/8/15
+        // TODO: 2020/8/15
         Doc doc =new Doc();
         doc.setOwner(Integer.parseInt((String) body.get("userId")));
         doc.setTeam(Integer.parseInt((String)body.get("teamId")));
         doc.setName((String)body.get("name"));
+        int tpid = Integer.parseInt ((String)body.get("templateId"));
+        doc.setContent(tpid==-1?"":docDao.getDocByDid(tpid).getContent());
         int id=docDao.addDoc(doc);
         Map<String,Object> res=new HashMap<>();
         res.put("result",id!=-1);
-        //res
-        return null;
+
+        return res;
     }
 
 }
