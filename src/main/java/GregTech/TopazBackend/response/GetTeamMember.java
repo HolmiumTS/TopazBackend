@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.naming.event.ObjectChangeListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,20 +43,30 @@ public class GetTeamMember {
             res.put("result", false);
             return res;
         }
-        int owner = team.getOwner();
-        res.put("creatorId", String.valueOf(owner));
-        List<String> adminId = userDao.getAdminUserByTid(tid).stream()
-                .map(User::getId)
-                .filter(i -> i != owner)
-                .map(String::valueOf)
-                .collect(Collectors.toList());
-        res.put("adminId", adminId);
-        List<String> memberId = userDao.getNormalUserByTid(tid).stream()
-                .map(User::getId)
-                .map(String::valueOf)
-                .collect(Collectors.toList());
-        res.put("memberId", memberId);
+        List<Map<String,Object>> memberList= new ArrayList<>();
+        memberList.add(addType(collectData(userDao.getById(team.getOwner())),"0"));
+        //res.put("creatorId", String.valueOf(owner));
+        List<User> normalUser=userDao.getNormalUserByTid(tid);
+        for (User user : normalUser) {
+            memberList.add(addType(collectData(user),"2"));
+        }
+        List<User> adminUser=userDao.getAdminUserByTid(tid);
+        for (User user : adminUser) {
+            memberList.add(addType((collectData(user)),"1"));
+        }
+        res.put("memberInfo",memberList);
         res.put("result", true);
         return res;
+    }
+    private Map<String,Object> collectData(User user){
+        Map<String,Object> map=new HashMap<>();
+        map.put("memberId",String.valueOf(user.getId()));
+        map.put("memberUsername",user.getName());
+        map.put("memberAvatar",user.getAvatar());
+        return map;
+    }
+    private Map<String,Object> addType(Map<String,Object> preUser,String type){
+        preUser.put("memberType",type);
+        return preUser;
     }
 }

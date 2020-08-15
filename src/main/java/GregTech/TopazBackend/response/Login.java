@@ -29,13 +29,14 @@ public class Login {
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         String uu = (String) body.get("user");
         String password = (String) body.get("password");
+        //从 body map 取出 来键所对应的值
         Map<String, Object> res = new HashMap<>();
         User user = null;
         if (uu.matches("[0-9]{1,9}")) {
             int id = Integer.parseInt(uu);
-            user = userDao.getById(id);
+            user = userDao.getById(id);//从数据库取出 user 实例
             if (user != null && password.equals(user.getPassword())) {
-                res.putAll(collectData(user));
+                res.putAll(collectData(user));//将user 放入 map ，并将此 map 放入 res
                 res.put("result", true);
                 log.trace("Login by id successfully. Id is {}", id);
                 return res;

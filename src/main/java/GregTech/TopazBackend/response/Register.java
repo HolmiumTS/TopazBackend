@@ -27,6 +27,7 @@ public class Register {
     @RequestMapping(value = "/Register",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
+
         User user = new User();
         user.setEmail((String) body.get("email"));
         user.setName((String) body.get("username"));

@@ -31,7 +31,8 @@ public class GetUserTeam {
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         int id = Integer.parseInt((String) body.get("id"));
         List<Team> teamsById = teamDao.getTeamsById(id);
-        List<Map<String, Object>> teams = teamsById.stream().map(this::collectData).collect(Collectors.toList());
+        List<Map<String, Object>> teams = teamsById.stream()
+                .map(this::collectData).collect(Collectors.toList());
         log.trace("Result is {}", teams);
         Map<String, Object> res = new HashMap<>();
         res.put("teams", teams);
