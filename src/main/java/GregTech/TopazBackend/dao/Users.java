@@ -176,4 +176,19 @@ public class Users {
     }
 
 
+    /**
+     * @param  did id of doc
+     * @param  id id of user
+     * @return true if did is collected by id,otherwise false
+     */
+    public boolean isCollected(int did,int id) {
+        int[]collectList=this.getById(id).getCollectedDoc();
+        for (int i : collectList) {
+            if (did==i){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

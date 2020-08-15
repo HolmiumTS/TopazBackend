@@ -35,7 +35,6 @@ public class GetRecentFile {
         int id=Integer.parseInt((String)body.get("id"));
         if (dids.length==0){
             logger.warn("{} has no recent file",id);
-            return null;
         }
         for (int did : dids) {
             docs.add(colletData(docDao.getDocByDid(did),id));
@@ -45,21 +44,14 @@ public class GetRecentFile {
         return res;
     }
 
-    // TODO: 2020/8/15
     private Map<String ,Object> colletData (Doc doc,int id){
-        boolean inside =false;
         Map<String ,Object>map=new HashMap<>();
         map.put("id",String.valueOf(doc.getDid()));
         map.put("name",doc.getName());
         map.put("username",userDao.getById(doc.getOwner()).getName());
         map.put("team",String.valueOf(doc.getTeam()));
         map.put("time",String.valueOf(doc.getUpdate()));
-        for (int s : userDao.getById(id).getCollectedDoc()) {
-            if (s==doc.getDid()){
-              inside=true;
-            }
-        }
-        map.put("collected",inside?"已收藏":"未收藏");
+        map.put("collected",userDao.isCollected(doc.getDid(),id)?"已收藏":"未收藏");
         map.put("view",doc.isView()?1:0);
         map.put("edit",doc.getEdit());
         return map;

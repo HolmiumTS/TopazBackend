@@ -100,4 +100,23 @@ public class Doc {
     public void setDel(boolean del) {
         isDel = del;
     }
+
+
+
+    @Override
+    public String toString() {
+        return "Doc{" +
+                "did=" + did +
+                ", name='" + name + '\'' +
+                ", owner=" + owner +
+                ", team=" + team +
+                ", view=" + view +
+                ", edit=" + edit +
+                ", create=" + create +
+                ", update=" + update +
+                ", count=" + count +
+                ", content='" + content + '\'' +
+                ", isDel=" + isDel +
+                '}';
+    }
 }
