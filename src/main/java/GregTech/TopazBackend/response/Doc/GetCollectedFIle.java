@@ -17,42 +17,42 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class GetMyFile {
-    private static final Logger log = LoggerFactory.getLogger(GetMyFile.class);
+public class GetCollectedFIle {
+
+    private static final Logger logger = LoggerFactory.getLogger(GetCollectedFIle.class);
+
     private final DocDao docDao;
     private final Users userDao;
-
     @Autowired
-    public GetMyFile(DocDao docDao, Users users) {
+    public GetCollectedFIle(DocDao docDao, Users users) {
         this.docDao = docDao;
         this.userDao = users;
     }
 
-    @RequestMapping(value = "/GetMyFile",
+    @RequestMapping(value = "/GetCollectedFile",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         int id = Integer.parseInt((String) body.get("id"));
         Map<String, Object> res = new HashMap<>();
         List<Map<String, Object>> files = new ArrayList<>();
-        List<Doc> docs = docDao.getDocsByOwner(id);
+        List<Doc> docs = docDao.getRecentFileByOwner(id,userDao);
         //存入 files list
         for (Doc doc : docs) {
             files.add(colletData(doc, id));
         }
-        log.warn("files are {}",files);
+        logger.warn("files are {}",files);
         res.put("files", files);
         return res;
     }
-
     private Map<String, Object> colletData(Doc doc, int id) {
         Map<String, Object> map = new HashMap<>();
         map.put("id", String.valueOf(doc.getDid()));
         map.put("name", doc.getName());
+        map.put("username", userDao.getById(doc.getOwner()).getName());
         map.put("team", String.valueOf(doc.getTeam()));
-        map.put("collected", userDao.isCollected(doc.getDid(), id) ? "已收藏" : "未收藏");
         map.put("view", doc.isView() ? 1 : 0);
         map.put("edit", doc.getEdit());
         return map;
     }
-
 }
+
