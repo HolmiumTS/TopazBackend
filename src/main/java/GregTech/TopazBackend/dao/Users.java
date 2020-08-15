@@ -165,15 +165,7 @@ public class Users {
         return jdbc.query(sql,new UserMapper(),tid);
     }
 
-    private String I2S(int[] docs) {
-        String[] bb = new String[docs.length];
-        for (int i = 0; i < docs.length; i++) {
-            bb[i] = Integer.toString(docs[i]);
-        }
-        String s = "";
-        s.join(";", docs.toString());
-        return s;
-    }
+
 
 
     /**

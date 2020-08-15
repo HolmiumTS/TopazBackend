@@ -62,6 +62,17 @@ public class DocDao {
         String sql="select * from  doc d where d.owner=? and  d.isdel=0 ";
         return jdbc.query(sql,new DocMapper(),id);
     }
+    // TODO: 2020/8/16
+    public List<Doc>getCollectedDocsByID(){
+        return null;
+    }
+    // TODO: 2020/8/16
+    /*public boolean PerishDoc(int id ){
+
+    }
+*/
+
+
 
     /**
      * @// TODO: 2020/8/15
