@@ -12,6 +12,7 @@ public class User {
     int[] latestDoc;
     String tel;
     String avatar;
+    int[] collectedDoc;
 
     public User() {
         id = -1;
@@ -71,6 +72,25 @@ public class User {
         this.latestDoc = Arrays.stream(latestDoc.split(Constant.SEPARATOR))
                 .mapToInt(Integer::parseInt)
                 .toArray();
+    }
+
+    public void setCollectedDoc(String collectedDoc) {
+        if (collectedDoc==null){
+            this.collectedDoc=new  int[0];
+            return;
+        }
+        if ("".equals(collectedDoc)){
+            this.latestDoc=new int[0];
+            return;
+        }
+        this.collectedDoc=Arrays.stream(collectedDoc.split(Constant.SEPARATOR))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+        return;
+    }
+
+    public int[] getCollectedDoc() {
+        return collectedDoc;
     }
 
     /**
