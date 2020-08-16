@@ -1,5 +1,9 @@
 package GregTech.TopazBackend.metadata;
 
+import GregTech.TopazBackend.tool.ToolClass;
+
+import java.sql.Timestamp;
+
 public class Doc {
     int did;
     String name;
@@ -12,6 +16,15 @@ public class Doc {
     int count;
     String content;
     boolean isDel;
+    boolean isLocked;
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
 
     public int getDid() {
         return did;
@@ -55,6 +68,13 @@ public class Doc {
 
     public int getEdit() {
         return edit;
+    }
+
+    public String getStrUpdate(){
+        return ToolClass.stamp2time(new Timestamp(this.update));
+    }
+    public String getStrCreate(){
+        return ToolClass.stamp2time(new Timestamp(this.create));
     }
 
     public void setEdit(int edit) {

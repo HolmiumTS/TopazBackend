@@ -23,16 +23,28 @@ public class GetFile {
 
     private final DocDao docDao;
     private final Users userDao;
+
     @Autowired
     public GetFile(DocDao docDao, Users users) {
         this.docDao = docDao;
         this.userDao = users;
     }
 
-    @RequestMapping(value = "/",// TODO: 2020/8/16
+    @RequestMapping(value = "/GetFile",// TODO: 2020/8/16
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
-       return null;
+        Doc doc = docDao.getDocByDid(Integer.parseInt((String) body.get("id")));
+        Map<String ,Object>res =new HashMap<>();
+        res.put("result",doc!=null);
+        res.put("owner",String.valueOf(doc.getOwner()));
+        res.put("createTime",doc.getStrCreate());
+        res.put("updateTime",doc.getStrUpdate());
+        res.put("content",doc.getContent());
+        res.put("count",String.valueOf(doc.getCount()));
+        res.put("name",doc.getName());
+        res.put("tid",doc.getTeam());
+        // TODO: 2020/8/17  似乎还要加字段
+        return res;
     }
 }
 

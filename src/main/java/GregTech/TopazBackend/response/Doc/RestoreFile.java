@@ -32,7 +32,12 @@ public RestoreFile(DocDao docDao, Users users) {
 @RequestMapping(value = "/RestoreFile",// TODO: 2020/8/16
         method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 public Map<String, Object> response(@RequestBody Map<String, Object> body) {
-        return null;
+        Map<String, Object> res = new HashMap<>();
+        int id = Integer.parseInt((String) body.get("id"));
+        int did = Integer.parseInt((String) body.get("did"));
+        boolean result =docDao.restoreDoc(id,did);
+        res.put("result",String.valueOf(result));
+        return res;
         }
         }
 

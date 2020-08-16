@@ -34,7 +34,7 @@ public class NewFile {
         logger.warn("doc is {}",doc);
         int id=docDao.addDoc(doc);
         Map<String,Object> res=new HashMap<>();
-        res.put("result",id!=-1);
+        res.put("result",String.valueOf(id!=-1));
         return res;
     }
 

@@ -1,5 +1,6 @@
 package GregTech.TopazBackend.dao;
 
+import GregTech.TopazBackend.metadata.Deldoc;
 import GregTech.TopazBackend.metadata.Doc;
 import GregTech.TopazBackend.metadata.U_d;
 import org.slf4j.Logger;
@@ -29,10 +30,10 @@ public class DocDao {
         this.jdbc = jdbc;
     }
 
+
     /**
      * @return return RowMapper<Doc>as the second argument of queryForObject and jdbc.query
      */
-
     public static class u_dMapper implements RowMapper<U_d> {
         @Override
         public U_d mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -43,8 +44,20 @@ public class DocDao {
         }
     }
 
+    public static class delMapper implements RowMapper<Deldoc> {
+
+        @Override
+        public Deldoc mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Deldoc deldoc = new Deldoc();
+            deldoc.setDid(rs.getInt("deid"));
+            deldoc.setTime(rs.getTimestamp("time").getTime());
+            deldoc.setExecutor(rs.getInt("executor"));
+            return deldoc;
+        }
+    }
+
     public boolean isCollected(int id, int did) {
-        String sql = "select distinct * from  u_d where did=? and uid= ?";
+        String sql = "select  * from  u_d where did=? and uid= ?";
         try {
             U_d u_d = jdbc.queryForObject(sql, new u_dMapper(), did, id);
             return true;
@@ -53,9 +66,24 @@ public class DocDao {
         }
     }
 
-    public boolean addCollect(int id,int did){
-        String sql ="";
-return false;
+    public boolean addCollect(int id, int did) {
+        try {
+            String sql = "insert into u_d(uid, did) values (?,?)";
+            int i = jdbc.update(sql, id, did);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean deleteCollect(int id, int did) {
+        try {
+            String sql = "delete from u_d where uid=? and did =? ";
+            jdbc.update(sql, id, did);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private static class DocMapper implements RowMapper<Doc> {
@@ -89,27 +117,22 @@ return false;
         return jdbc.query(sql, new DocMapper(), id);
     }
 
-    // TODO: 2020/8/16
-    public List<Doc> getCollectedDocsByID() {
-        return null;
+    public List<Doc> getTeamFileByTid(int tid) {
+        String sql = "select * from doc where team=?";
+        return jdbc.query(sql, new DocMapper(), tid);
     }
 
-    // TODO: 2020/8/16
-    public boolean PerishDoc(int id) {
-        return false;
-    }
-
-
-    /**
-     * @param id id of user
-     * @return deletedDocList
-     * @// TODO: 2020/8/15
-     */
-
-    public List<Doc> getDeletedDocsByOwner(int id) {
-        String sql = "select * from  doc d where d.owner=? and  d.isdel=1 ";
+    public List<Doc> getCollectedDocsByID(int id) {
+        String sql = "select * from doc d ,u_d ud where ud.uid=?";
         return jdbc.query(sql, new DocMapper(), id);
     }
+
+    public List<Deldoc> getDeletedDocsByID(int id) {
+        List<Doc> docs = new ArrayList<>();
+        String sql = "select * from deldoc where executor=?";
+        return jdbc.query(sql, new delMapper(), id);
+    }
+
 
     /**
      * @param id
@@ -155,13 +178,13 @@ return false;
                     ps.setString(1, doc.getName());
                     ps.setInt(2, doc.getOwner());
                     ps.setInt(3, doc.getTeam());
-                    ps.setBoolean(4, doc.isView());
-                    ps.setInt(5, doc.getEdit());
+                    ps.setBoolean(4, true);
+                    ps.setInt(5, 0);
                     ps.setTimestamp(6, new Timestamp(new Date().getTime()));
                     ps.setTimestamp(7, new Timestamp(new Date().getTime()));
-                    ps.setInt(8, doc.getCount());
+                    ps.setInt(8, 1);
                     ps.setString(9, doc.getContent());
-                    ps.setBoolean(10, doc.isDel());
+                    ps.setBoolean(10, false);
                     return ps;
                 }
             }, keyHolder);
@@ -174,16 +197,61 @@ return false;
 
     }
 
+
+    public boolean isTmpDeletedBy(int id, int did) {
+        String sql = "select *from deldoc where executor=? and did= ?";
+        try {
+            Deldoc deldoc = jdbc.queryForObject(sql, new delMapper(), id, did);
+            if (deldoc != null) {
+                return true;
+            }
+            return false;
+        } catch (EmptyResultDataAccessException e) {
+            return false;
+        }
+
+    }
+
+    public boolean restoreDoc(int id, int did) {
+        if (isTmpDeletedBy(id, did)) {
+            String sql = "delete  from  deldoc where executor=? and  did=?";
+            jdbc.update(sql, id, did);
+            Doc doc = getDocByDid(did);
+            doc.setDel(false);
+            updateDoc(doc);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean tmpDeleteDoc(int id, int did) {
+        try {
+            String sql2 = "insert  into deldoc(did, time, executor) values (?,?,?)";
+            String sql = "update  doc d set d.isdel=? ";
+            int i = jdbc.update(sql);
+            if (i > 0) {
+                i = jdbc.update(sql2, id, new Timestamp(new Date().getTime()), did);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            log.warn("Exception happened in updateDoc");
+            return false;
+        }
+    }
+
     /**
      * @param doc new doc
      * @return false if failed
      */
     public boolean updateDoc(Doc doc) {
         try {
-            String sql = "update  doc d set d.name=?,d.owner=?,d.team=?,d.view=?,d.edit=?,d.`update`=?,d.count=?,d.content=?,d.isdel=? ";
+            String sql = "update  doc d set d.name=?,d.owner=?,d.team=?,d.view=?,d.edit=?,d.`update`=?,d.count=?,d.content=?,d.isdel=?,d.islocked=? ";
 
             int i = jdbc.update(sql, doc.getName(), doc.getOwner(), doc.getTeam(), doc.isView(), doc.getEdit(),
-                    new Timestamp(new java.util.Date().getTime()), doc.getCount() + 1, doc.getContent(), doc.isDel());
+                    new Timestamp(new java.util.Date().getTime()), doc.getCount() + 1, doc.getContent(), doc.isDel(), doc.isLocked());
             if (i > 0) {
                 return true;
             } else {
@@ -208,7 +276,11 @@ return false;
      */
     public boolean delDoc(int did) {
         try {
+            String sql1 = "delete from u_d where did=?";
+            String sql2 = "delete from deldoc where  did =?";
             String sql = "delete  from doc d where  d.did=?";
+            jdbc.update(sql1, did);
+            jdbc.update(sql2, did);
             jdbc.update(sql, did);
             return true;
         } catch (Exception e) {

@@ -2,7 +2,7 @@ package GregTech.TopazBackend.response.Doc;
 
 import GregTech.TopazBackend.dao.DocDao;
 import GregTech.TopazBackend.dao.Users;
-import GregTech.TopazBackend.metadata.Doc;
+import GregTech.TopazBackend.metadata.Deldoc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,19 +35,19 @@ public class GetDeletedFile {
         int id = Integer.parseInt((String) body.get("id"));
         Map<String, Object> res = new HashMap<>();
         List<Map<String, Object>> files = new ArrayList<>();
-        List<Doc> docs = docDao.getDeletedDocsByOwner(id);
+        List<Deldoc> docs = docDao.getDeletedDocsByID(id);
         //存入 files list
-        for (Doc doc : docs) {
-            files.add(colletData(doc, id));
+        for (Deldoc doc : docs) {
+            files.add(colletData(doc));
         }
         logger.warn("files are {}",files);
         res.put("files", files);
         return res;
     }
-    private Map<String, Object> colletData(Doc doc, int id) {
+    private Map<String, Object> colletData(Deldoc doc) {
         Map<String, Object> map = new HashMap<>();
         map.put("id", String.valueOf(doc.getDid()));
-        map.put("name", doc.getName());
+        map.put("name", docDao.getDocByDid(doc.getDid()).getName());
         return map;
     }
 }

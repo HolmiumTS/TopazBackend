@@ -35,10 +35,12 @@ public class GetCollectedFIle {
         int id = Integer.parseInt((String) body.get("id"));
         Map<String, Object> res = new HashMap<>();
         List<Map<String, Object>> files = new ArrayList<>();
-        List<Doc> docs = docDao.getRecentFileByOwner(id,userDao);
+        List<Doc> docs = docDao.getCollectedDocsByID(id);
         //存入 files list
         for (Doc doc : docs) {
-            files.add(colletData(doc, id));
+            if (!doc.isDel()){
+                files.add(colletData(doc, id));
+            }
         }
         logger.warn("files are {}",files);
         res.put("files", files);
@@ -50,8 +52,8 @@ public class GetCollectedFIle {
         map.put("name", doc.getName());
         map.put("username", userDao.getById(doc.getOwner()).getName());
         map.put("team", String.valueOf(doc.getTeam()));
-        map.put("view", doc.isView() ? 1 : 0);
-        map.put("edit", doc.getEdit());
+        map.put("view", doc.isView() ?String.valueOf(1)  : String.valueOf(0));
+        map.put("edit", String.valueOf(doc.getEdit()));
         return map;
     }
 }

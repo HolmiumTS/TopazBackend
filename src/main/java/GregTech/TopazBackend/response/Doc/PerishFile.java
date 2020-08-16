@@ -32,7 +32,11 @@ public PerishFile(DocDao docDao, Users users) {
 @RequestMapping(value = "/PerishFile",// TODO: 2020/8/16
         method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 public Map<String, Object> response(@RequestBody Map<String, Object> body) {
-        return null;
+        Map<String, Object> res = new HashMap<>();
+        int did = Integer.parseInt((String) body.get("id"));
+        boolean result = docDao.delDoc(did);
+        res.put("result",result);
+        return res;
         }
         }
 

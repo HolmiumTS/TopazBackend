@@ -32,7 +32,17 @@ public class CollectFile {
     @RequestMapping(value = "/CollectFile",// TODO: 2020/8/16
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
-        return null;
+        int id =Integer.parseInt((String)body.get("userId"));
+        int did =Integer.parseInt((String)body.get("fileId"));
+        Map<String, Object> res = new HashMap<>();
+        boolean result=false;
+        if(docDao.isCollected(id,did)){
+            result= docDao.deleteCollect(id,did);
+        }else {
+            result= docDao.addCollect(id,did );
+        }
+        res.put("result",String.valueOf(result));
+        return res;
     }
 }
 

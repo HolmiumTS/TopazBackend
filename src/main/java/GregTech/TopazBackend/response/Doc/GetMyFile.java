@@ -39,7 +39,7 @@ public class GetMyFile {
         for (Doc doc : docs) {
             files.add(colletData(doc, id));
         }
-        log.warn("files are {}",files);
+        log.warn("files are {}", files);
         res.put("files", files);
         return res;
     }
@@ -49,9 +49,9 @@ public class GetMyFile {
         map.put("id", String.valueOf(doc.getDid()));
         map.put("name", doc.getName());
         map.put("team", String.valueOf(doc.getTeam()));
-        // TODO: 2020/8/16
-        map.put("view", doc.isView() ? 1 : 0);
-        map.put("edit", doc.getEdit());
+        map.put("collected", docDao.isCollected(id, doc.getDid()) ? "已收藏" : "未收藏");
+        map.put("view", doc.isView() ?String.valueOf(1) :String.valueOf(0) );
+        map.put("edit", String.valueOf(doc.getEdit()) );
         return map;
     }
 

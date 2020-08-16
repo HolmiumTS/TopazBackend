@@ -3,6 +3,7 @@ package GregTech.TopazBackend.response.Doc;
 import GregTech.TopazBackend.dao.DocDao;
 import GregTech.TopazBackend.dao.Users;
 import GregTech.TopazBackend.metadata.Doc;
+import GregTech.TopazBackend.tool.ToolClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +39,9 @@ public class GetRecentFile {
             logger.warn("{} has no recent file",id);
         }
         for (int did : dids) {
-            docs.add(colletData(docDao.getDocByDid(did),id));
+            if (!docDao.getDocByDid(did).isDel()){
+                docs.add(colletData(docDao.getDocByDid(did),id));
+            }
         }
         res.put("files",docs);
         logger.warn("res is {}",res);
@@ -50,10 +54,10 @@ public class GetRecentFile {
         map.put("name",doc.getName());
         map.put("username",userDao.getById(doc.getOwner()).getName());
         map.put("team",String.valueOf(doc.getTeam()));
-        map.put("time",String.valueOf(doc.getUpdate()));
-       // map.put("collected",userDao.isCollected(doc.getDid(),id)?"已收藏":"未收藏");
-        map.put("view",doc.isView()?1:0);
-        map.put("edit",doc.getEdit());
+        map.put("time", doc.getStrUpdate());
+        map.put("collected",docDao.isCollected(id,doc.getDid())?"已收藏":"未收藏");
+        map.put("view",doc.isView()?String.valueOf(1):String.valueOf(0));
+        map.put("edit",String.valueOf(doc.getEdit()));
         return map;
     }
 

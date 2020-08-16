@@ -1,6 +1,7 @@
 package GregTech.TopazBackend.dao;
 
 import GregTech.TopazBackend.metadata.Team;
+import GregTech.TopazBackend.metadata.U_t;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +43,50 @@ public class Teams {
         }
     }
 
+    private static class U_tMapper implements RowMapper<U_t> {
+
+        @Override
+        public U_t mapRow(ResultSet rs, int rowNum) throws SQLException {
+            U_t ut = new U_t();
+            ut.setAdmin(rs.getBoolean("isAdmin"));
+            ut.setTeam(rs.getInt("team"));
+            ut.setUser(rs.getByte("user"));
+            return ut;
+        }
+    }
+
+    public boolean isAdmin(int id, int tid) {
+        try {
+            String sql = "select * from u_t ut where user=? and team=?";
+            U_t u_t = jdbc.queryForObject(sql, new U_tMapper(), id, tid);
+            if (u_t.isAdmin()) {
+                return true;
+            } else return false;
+        } catch (EmptyResultDataAccessException e) {
+            return false;
+        }
+    }
+
+    public boolean isUser(int id, int tid) {
+        try {
+            String sql = "select * from u_t ut where user=? and team=?";
+            U_t u_t = jdbc.queryForObject(sql, new U_tMapper(), id, tid);
+            return true;
+        } catch (EmptyResultDataAccessException e) {
+            return false;
+        }
+    }
+
+
+
+
     /**
      * @param id user's id
      * @return a list of all teams that include this user, return an empty list if none
      */
     public List<Team> getTeamsById(int id) {
         String sql = "select t.tid, name, owner, info from team t,u_t ut where ut.user=? and ut.team=t.tid";
-        List<Team> teams = jdbc.query(sql, new TeamsMapper(),id);
+        List<Team> teams = jdbc.query(sql, new TeamsMapper(), id);
         return teams;
     }
 
@@ -156,10 +194,10 @@ public class Teams {
                     return ps;
                 }
             }, keyHolder);
-            int id=keyHolder.getKey().intValue();
-            String sql2 ="insert into u_t (user, team, isAdmin) values (?,?,?)";
+            int id = keyHolder.getKey().intValue();
+            String sql2 = "insert into u_t (user, team, isAdmin) values (?,?,?)";
             //set creator as admin of the created team
-            jdbc.update(sql2,team.getOwner(),id,1);
+            jdbc.update(sql2, team.getOwner(), id, 1);
             return id;
         } catch (Exception e) {
             log.warn("err happened in addTeam ");
@@ -199,9 +237,9 @@ public class Teams {
         //todo
         try {
             String sql = "insert  into u_t(user, team, isAdmin) values(?,?,0)";
-            jdbc.update(sql,id,tid);
+            jdbc.update(sql, id, tid);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -213,6 +251,6 @@ public class Teams {
     public List<Team> getTeamByName(String name) {
         //untest
         String sql = "select tid, name, owner, info from team t where t.name like ?";
-        return jdbc.query(sql, new TeamsMapper(),"%"+name+"%");
+        return jdbc.query(sql, new TeamsMapper(), "%" + name + "%");
     }
 }
