@@ -1,7 +1,7 @@
 package GregTech.TopazBackend.dao;
 
 import GregTech.TopazBackend.metadata.Doc;
-import GregTech.TopazBackend.metadata.User;
+import GregTech.TopazBackend.metadata.U_d;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +32,32 @@ public class DocDao {
     /**
      * @return return RowMapper<Doc>as the second argument of queryForObject and jdbc.query
      */
+
+    public static class u_dMapper implements RowMapper<U_d> {
+        @Override
+        public U_d mapRow(ResultSet rs, int rowNum) throws SQLException {
+            U_d u_d = new U_d();
+            u_d.setDid(rs.getInt("did"));
+            u_d.setUid(rs.getInt("uid"));
+            return u_d;
+        }
+    }
+
+    public boolean isCollected(int id, int did) {
+        String sql = "select distinct * from  u_d where did=? and uid= ?";
+        try {
+            U_d u_d = jdbc.queryForObject(sql, new u_dMapper(), did, id);
+            return true;
+        } catch (EmptyResultDataAccessException e) {
+            return false;
+        }
+    }
+
+    public boolean addCollect(int id,int did){
+        String sql ="";
+return false;
+    }
+
     private static class DocMapper implements RowMapper<Doc> {
 
         @Override
@@ -53,48 +79,48 @@ public class DocDao {
     }
 
     /**
-     * @// TODO: 2020/8/15
-     * @param  id id of User
+     * @param id id of User
      * @return all not deleted docs
      * return null if User dont have a doc
+     * @// TODO: 2020/8/15
      */
     public List<Doc> getDocsByOwner(int id) {
-        String sql="select * from  doc d where d.owner=? and  d.isdel=0 ";
-        return jdbc.query(sql,new DocMapper(),id);
+        String sql = "select * from  doc d where d.owner=? and  d.isdel=0 ";
+        return jdbc.query(sql, new DocMapper(), id);
     }
+
     // TODO: 2020/8/16
-    public List<Doc>getCollectedDocsByID(){
+    public List<Doc> getCollectedDocsByID() {
         return null;
     }
+
     // TODO: 2020/8/16
-    /*public boolean PerishDoc(int id ){
-
+    public boolean PerishDoc(int id) {
+        return false;
     }
-*/
-
 
 
     /**
-     * @// TODO: 2020/8/15
      * @param id id of user
      * @return deletedDocList
+     * @// TODO: 2020/8/15
      */
 
-    public List<Doc> getDeletedDocsByOwner(int id ) {
-        String sql="select * from  doc d where d.owner=? and  d.isdel=1 ";
-        return jdbc.query(sql,new DocMapper(),id);
+    public List<Doc> getDeletedDocsByOwner(int id) {
+        String sql = "select * from  doc d where d.owner=? and  d.isdel=1 ";
+        return jdbc.query(sql, new DocMapper(), id);
     }
 
     /**
-     * @// TODO: 2020/8/15
      * @param id
      * @return list
-     * */
-    public List<Doc> getRecentFileByOwner(int id, Users users){
-        int[] recentList=users.getById(id).getLatestDoc();
-        List<Doc>docs=new ArrayList<>();
+     * @// TODO: 2020/8/15
+     */
+    public List<Doc> getRecentFileByOwner(int id, Users users) {
+        int[] recentList = users.getById(id).getLatestDoc();
+        List<Doc> docs = new ArrayList<>();
         for (int i : recentList) {
-                docs.add(this.getDocByDid(i));
+            docs.add(this.getDocByDid(i));
         }
         return docs;
     }
