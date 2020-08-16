@@ -49,7 +49,7 @@ public class GetMyFile {
         map.put("id", String.valueOf(doc.getDid()));
         map.put("name", doc.getName());
         map.put("team", String.valueOf(doc.getTeam()));
-        map.put("collected", userDao.isCollected(doc.getDid(), id) ? "已收藏" : "未收藏");
+        // TODO: 2020/8/16
         map.put("view", doc.isView() ? 1 : 0);
         map.put("edit", doc.getEdit());
         return map;

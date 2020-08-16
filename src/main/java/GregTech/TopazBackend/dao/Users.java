@@ -40,7 +40,6 @@ public class Users {
             user1.setLatestDoc(rs.getString("latestDoc"));
             user1.setTel(rs.getString("tel"));
             user1.setAvatar(rs.getString("avatar"));
-            user1.setCollectedDoc(rs.getString("collect"));
             return user1;
         }
     }
@@ -100,9 +99,9 @@ public class Users {
     public boolean updateUser(User user) {
         try {
             String sql = "update user u set u.id=?,u.name=?,u.password=?,u.email=?" +
-                    ",u.tel=?,u.avatar=?,u.collect=? where u.id=?";
+                    ",u.tel=?,u.avatar=? where u.id=?";
             int i = jdbc.update(sql, user.getId(), user.getName(), user.getPassword()
-                    , user.getEmail(), user.getTel(), user.getAvatar(), user.getId(),user.getCollectedDoc());
+                    , user.getEmail(), user.getTel(), user.getAvatar(), user.getId());
             if (i > 0) {
                 return true;
             } else {
@@ -149,7 +148,7 @@ public class Users {
      */
     public List<User> getNormalUserByTid(int tid) {
         // unTest
-        String sql = "select id, name, password, email, latestdoc, tel, avatar, user, team, isadmin,collect from user u,u_t ut where u.id=ut.user and ut.team=? and ut.isAdmin=0";
+        String sql = "select id, name, password, email, latestdoc, tel, avatar, user, team, isadmin from user u,u_t ut where u.id=ut.user and ut.team=? and ut.isAdmin=0";
         return jdbc.query(sql, new UserMapper(), tid);
     }
 
@@ -161,7 +160,7 @@ public class Users {
      */
     public List<User> getAdminUserByTid(int tid) {
         //untest
-        String sql ="select id, name, password, email, latestdoc, tel, avatar, user, team, isadmin,collect from user u,u_t ut where u.id=ut.user and ut.team=? and ut.isAdmin=1";
+        String sql ="select id, name, password, email, latestdoc, tel, avatar, user, team, isadmin from user u,u_t ut where u.id=ut.user and ut.team=? and ut.isAdmin=1";
         return jdbc.query(sql,new UserMapper(),tid);
     }
 
@@ -173,7 +172,7 @@ public class Users {
      * @param  id id of user
      * @return true if did is collected by id,otherwise false
      */
-    public boolean isCollected(int did,int id) {
+    /*public boolean isCollected(int did,int id) {
         int[]collectList=this.getById(id).getCollectedDoc();
         for (int i : collectList) {
             if (did==i){
@@ -181,6 +180,6 @@ public class Users {
             }
         }
         return false;
-    }
+    }*/
 
 }
