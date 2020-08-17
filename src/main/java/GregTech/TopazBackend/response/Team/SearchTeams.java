@@ -53,10 +53,15 @@ public class SearchTeams {
                 .map(Apply::getTid)
                 .collect(Collectors.toSet())
         );
-        List<Map<String, Object>> teams = teamList.stream()
+        List<Map<String, Object>> teams = new ArrayList<>(teamList.stream()
                 .dropWhile(team -> abortSet.contains(team.getTid()))
                 .map(this::collectData)
-                .collect(Collectors.toList());
+                .collect(Collectors.toMap(
+                        m -> (String) m.get("id"),
+                        m -> m,
+                        (o, n) -> n
+                ))
+                .values());
         log.trace("Team list is {}", teams);
         Map<String, Object> res = new HashMap<>();
         res.put("teams", teams);
