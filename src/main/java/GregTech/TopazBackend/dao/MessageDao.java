@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
+import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -33,14 +33,15 @@ public class MessageDao {
             msg.setReceiver(rs.getInt("receiver"));
             msg.setStatus(rs.getInt("status"));
             msg.setSender(rs.getInt("sender"));
+            msg.setTime(rs.getTimestamp("time").getTime());
             return msg;
         }
     }
 
     public boolean generateNewMsg(int sender,int receiver,String content){
         try {
-            String sql ="insert  into  message(sender, receiver, content) values(?,?,?) ";
-            jdbc.update(sql,sender,receiver,content);
+            String sql ="insert  into  message(sender, receiver, content,time) values(?,?,?) ";
+            jdbc.update(sql,sender,receiver,content,new Date().getTime());
             return  true;
         }catch (Exception e){
             return false;
@@ -52,12 +53,10 @@ public class MessageDao {
     public List<Message> getSortedMsg(int receiver){
         String sql ="select * from message where receiver = ?";
         List<Message> messages= jdbc.query(sql,new messageMap(),receiver);
-        if (messages.isEmpty()){
-            return null;
-        }else {
+        if (!messages.isEmpty()) {
             Collections.sort(messages);
-            return messages;
         }
+        return messages;
     }
 
     public boolean markAsRead(int mid){
