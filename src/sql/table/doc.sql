@@ -1,4 +1,4 @@
-create table doc
+create table se.doc
 (
     did      int auto_increment
         primary key,
@@ -13,9 +13,9 @@ create table doc
     content  longtext                               null,
     isdel    tinyint(1)                             not null,
     islocked tinyint(1)               default 0     not null,
-    constraint doc_team_tid_fk
+    constraint Doc_Team_tid_fk
         foreign key (team) references se.team (tid),
-    constraint doc_user_id_fk
+    constraint Doc_User_id_fk
         foreign key (owner) references se.user (id)
 );
 
