@@ -102,6 +102,7 @@ public class DocDao {
             doc.setCount(rs.getInt("count"));
             doc.setContent(rs.getString("content"));
             doc.setDel(rs.getBoolean("isdel"));
+            log.trace("did is {}, c is {}, u is {}", doc.getDid(), doc.getCreate(), doc.getUpdate());
             return doc;
         }
     }
