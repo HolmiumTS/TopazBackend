@@ -1,5 +1,6 @@
 package GregTech.TopazBackend.dao;
 
+import GregTech.TopazBackend.metadata.Comment;
 import GregTech.TopazBackend.metadata.Deldoc;
 import GregTech.TopazBackend.metadata.Doc;
 import GregTech.TopazBackend.metadata.U_d;
@@ -13,6 +14,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,6 +46,20 @@ public class DocDao {
         }
     }
 
+    public static class commentMapper implements RowMapper<Comment> {
+
+        @Override
+        public Comment mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Comment comment = new Comment();
+            comment.setCid(rs.getInt("cid"));
+            comment.setDid(rs.getInt("did"));
+            comment.setUid(rs.getInt("uid"));
+            comment.setContent(rs.getString("content"));
+            comment.setTime(rs.getTimestamp("time").getTime());
+            return comment;
+        }
+    }
+
     public static class delMapper implements RowMapper<Deldoc> {
 
         @Override
@@ -66,10 +82,10 @@ public class DocDao {
         }
     }
 
-    public boolean addCollect(int id, int did,int tid) {
+    public boolean addCollect(int id, int did, int tid) {
         try {
             String sql = "insert into u_d(uid, did,dteam) values (?,?,?)";
-            int i = jdbc.update(sql, id, did,tid);
+            int i = jdbc.update(sql, id, did, tid);
             return true;
         } catch (Exception e) {
             return false;
@@ -227,6 +243,21 @@ public class DocDao {
         }
     }
 
+    public boolean commitComment(int id, int did, String content) {
+        String sql = "insert  into comment( did, content, uid,time) values (?,?,?,?)";
+        int i = jdbc.update(sql, did, content, id,new Timestamp(new Date().getTime()));
+        if (i > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public List<Comment> getCommentsByDid(int did) {
+        String sql = "select * from comment where did=?";
+        return jdbc.query(sql,new commentMapper(),did);
+    }
+
     public boolean tmpDeleteDoc(int id, int did) {
         try {
             String sql2 = "insert  into deldoc(did, time, executor) values (?,?,?)";
@@ -254,7 +285,7 @@ public class DocDao {
             String sql = "update  doc d set d.name=?,d.owner=?,d.team=?,d.view=?,d.edit=?,d.`update`=?,d.count=?,d.content=?,d.isdel=?,d.islocked=? where did =?";
             log.warn(doc.getStrCreate());
             int i = jdbc.update(sql, doc.getName(), doc.getOwner(), doc.getTeam(), doc.isView(), doc.getEdit(),
-                    new Timestamp(new java.util.Date().getTime()), doc.getCount() + 1, doc.getContent(), doc.isDel(), doc.isLocked(),doc.getDid());
+                    new Timestamp(new java.util.Date().getTime()), doc.getCount() + 1, doc.getContent(), doc.isDel(), doc.isLocked(), doc.getDid());
             log.warn(doc.getStrCreate());
             if (i > 0) {
                 return true;
