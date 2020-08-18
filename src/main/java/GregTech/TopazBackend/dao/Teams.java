@@ -217,9 +217,11 @@ public class Teams {
             String sql = "delete from team t where t.tid=?";
             String sql3="delete from doc where team =?";
             String sql4 ="delete  from  u_d where dteam=?";
+            String sql5 ="delete from  apply where  tid=?";
             jdbc.update(sql2, tid);
             jdbc.update(sql4,tid);
             jdbc.update(sql3,tid);
+            jdbc.update(sql5,tid);
             jdbc.update(sql, tid);
             return true;
         } catch (Exception e) {

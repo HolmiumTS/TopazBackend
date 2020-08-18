@@ -230,16 +230,17 @@ public class DocDao {
     public boolean tmpDeleteDoc(int id, int did) {
         try {
             String sql2 = "insert  into deldoc(did, time, executor) values (?,?,?)";
-            String sql = "update  doc d set d.isdel=? ";
+            String sql = "update  doc d set d.isdel=1 ";
             int i = jdbc.update(sql);
             if (i > 0) {
-                i = jdbc.update(sql2, id, new Timestamp(new Date().getTime()), did);
+                i = jdbc.update(sql2, did, new Timestamp(new Date().getTime()), id);
                 return true;
             } else {
                 return false;
             }
         } catch (Exception e) {
             log.warn("Exception happened in updateDoc");
+            e.printStackTrace();
             return false;
         }
     }
@@ -261,6 +262,7 @@ public class DocDao {
             }
         } catch (Exception e) {
             log.warn("Exception happened in updateDoc");
+            e.printStackTrace();
             return false;
         }
     }
