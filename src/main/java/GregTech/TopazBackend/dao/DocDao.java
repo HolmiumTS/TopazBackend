@@ -66,10 +66,10 @@ public class DocDao {
         }
     }
 
-    public boolean addCollect(int id, int did) {
+    public boolean addCollect(int id, int did,int tid) {
         try {
-            String sql = "insert into u_d(uid, did) values (?,?)";
-            int i = jdbc.update(sql, id, did);
+            String sql = "insert into u_d(uid, did,dteam) values (?,?,?)";
+            int i = jdbc.update(sql, id, did,tid);
             return true;
         } catch (Exception e) {
             return false;

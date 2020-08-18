@@ -1,7 +1,8 @@
 create table se.u_d
 (
-    uid int not null,
-    did int not null,
+    uid   int            not null,
+    did   int            not null,
+    dteam int default -1 null,
     constraint u_d_pk
         unique (uid, did),
     constraint u_d_doc_did_fk

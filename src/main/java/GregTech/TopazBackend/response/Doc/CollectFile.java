@@ -34,12 +34,13 @@ public class CollectFile {
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         int id =Integer.parseInt((String)body.get("userId"));
         int did =Integer.parseInt((String)body.get("fileId"));
+        int team =docDao.getDocByDid(did).getTeam();
         Map<String, Object> res = new HashMap<>();
         boolean result=false;
         if(docDao.isCollected(id,did)){
             result= docDao.deleteCollect(id,did);
         }else {
-            result= docDao.addCollect(id,did );
+            result= docDao.addCollect(id,did,team );
         }
         res.put("result",result);
         return res;
