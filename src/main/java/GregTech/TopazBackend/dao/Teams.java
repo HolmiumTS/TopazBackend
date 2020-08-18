@@ -78,8 +78,6 @@ public class Teams {
     }
 
 
-
-
     /**
      * @param id user's id
      * @return a list of all teams that include this user, return an empty list if none
@@ -222,6 +220,7 @@ public class Teams {
             return true;
         } catch (Exception e) {
             log.warn("err happened in delTeam");
+            e.printStackTrace();
             return false;
         }
     }
