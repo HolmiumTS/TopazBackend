@@ -191,6 +191,7 @@ public class DocDao {
             return keyHolder.getKey().intValue();
         } catch (Exception e) {
             log.error("error happened in add Doc");
+            e.printStackTrace();
             return -1;
         }
 
