@@ -34,16 +34,18 @@ public class GetFile {
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         Doc doc = docDao.getDocByDid(Integer.parseInt((String) body.get("id")));
-        Map<String ,Object>res =new HashMap<>();
-        res.put("result",doc!=null);
-        res.put("owner",String.valueOf(doc.getOwner()));
-        res.put("createTime",doc.getStrCreate());
-        res.put("updateTime",doc.getStrUpdate());
-        res.put("content",doc.getContent());
-        res.put("count",String.valueOf(doc.getCount()/2));
-        res.put("name",doc.getName());
-        res.put("tid",doc.getTeam());
+
+        Map<String, Object> res = new HashMap<>();
+        res.put("result", doc != null);
+        res.put("owner", String.valueOf(doc.getOwner()));
+        res.put("createTime", doc.getStrCreate());
+        res.put("updateTime", doc.getStrUpdate());
+        res.put("content", doc.getContent());
+        res.put("count", String.valueOf(doc.getCount() / 2));
+        res.put("name", doc.getName());
+        res.put("tid", doc.getTeam());
         // TODO: 2020/8/17  似乎还要加字段
+        logger.trace("res is {}", res);
         return res;
     }
 }
