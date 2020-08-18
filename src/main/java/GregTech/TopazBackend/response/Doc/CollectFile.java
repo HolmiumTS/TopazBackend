@@ -41,7 +41,7 @@ public class CollectFile {
         }else {
             result= docDao.addCollect(id,did );
         }
-        res.put("result",String.valueOf(result));
+        res.put("result",result);
         return res;
     }
 }

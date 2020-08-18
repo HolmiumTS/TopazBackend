@@ -39,7 +39,7 @@ public class DeleteTemplate {
         int uid = Integer.parseInt((String) body.get("userId"));
         int temid = Integer.parseInt((String) body.get("templateId"));
         boolean result = templateDao.deleteTemplate(uid, temid);
-        res.put("result", String.valueOf(result));
+        res.put("result", result);
         return res;
     }
 }

@@ -38,7 +38,7 @@ public class RenameTemplate{
         int uid= Integer.parseInt((String)body.get("userId"));
         int tid= Integer.parseInt((String)body.get("templateId"));
         boolean result = templateDao.renameTemplate(uid,tid,(String)body.get("name"));
-        res.put("result",String.valueOf(result));
+        res.put("result",result);
         return res;
     }
 }

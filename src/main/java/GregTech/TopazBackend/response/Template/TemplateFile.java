@@ -38,7 +38,7 @@ public class  TemplateFile{
         int uid= Integer.parseInt((String)body.get("userId"));
         int did= Integer.parseInt((String)body.get("fileId"));
         boolean result = templateDao.templateFile(did,uid);
-        res.put("result",String.valueOf(result));
+        res.put("result",result);
         return res;
     }
 }

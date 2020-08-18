@@ -17,26 +17,27 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class  PerishFile{
+public class PerishFile {
 
-private static final Logger logger = LoggerFactory.getLogger(PerishFile.class);// TODO: 2020/8/16
+    private static final Logger logger = LoggerFactory.getLogger(PerishFile.class);// TODO: 2020/8/16
 
-private final DocDao docDao;
-private final Users userDao;
-@Autowired
-public PerishFile(DocDao docDao, Users users) {
+    private final DocDao docDao;
+    private final Users userDao;
+
+    @Autowired
+    public PerishFile(DocDao docDao, Users users) {
         this.docDao = docDao;
         this.userDao = users;
-        }
+    }
 
-@RequestMapping(value = "/PerishFile",// TODO: 2020/8/16
-        method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-public Map<String, Object> response(@RequestBody Map<String, Object> body) {
+    @RequestMapping(value = "/PerishFile",// TODO: 2020/8/16
+            method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         Map<String, Object> res = new HashMap<>();
         int did = Integer.parseInt((String) body.get("id"));
         boolean result = docDao.delDoc(did);
-        res.put("result",result);
+        res.put("result", result);
         return res;
-        }
-        }
+    }
+}
 

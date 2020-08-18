@@ -17,27 +17,28 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class  RestoreFile{
+public class RestoreFile {
 
-private static final Logger logger = LoggerFactory.getLogger(RestoreFile.class);// TODO: 2020/8/16
+    private static final Logger logger = LoggerFactory.getLogger(RestoreFile.class);// TODO: 2020/8/16
 
-private final DocDao docDao;
-private final Users userDao;
-@Autowired
-public RestoreFile(DocDao docDao, Users users) {
+    private final DocDao docDao;
+    private final Users userDao;
+
+    @Autowired
+    public RestoreFile(DocDao docDao, Users users) {
         this.docDao = docDao;
         this.userDao = users;
-        }
+    }
 
-@RequestMapping(value = "/RestoreFile",// TODO: 2020/8/16
-        method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-public Map<String, Object> response(@RequestBody Map<String, Object> body) {
+    @RequestMapping(value = "/RestoreFile",// TODO: 2020/8/16
+            method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         Map<String, Object> res = new HashMap<>();
         int id = Integer.parseInt((String) body.get("id"));
         int did = Integer.parseInt((String) body.get("did"));
-        boolean result =docDao.restoreDoc(id,did);
-        res.put("result",String.valueOf(result));
+        boolean result = docDao.restoreDoc(id, did);
+        res.put("result", result);
         return res;
-        }
-        }
+    }
+}
 
