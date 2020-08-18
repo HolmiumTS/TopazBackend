@@ -252,9 +252,10 @@ public class DocDao {
     public boolean updateDoc(Doc doc) {
         try {
             String sql = "update  doc d set d.name=?,d.owner=?,d.team=?,d.view=?,d.edit=?,d.`update`=?,d.count=?,d.content=?,d.isdel=?,d.islocked=? where did =?";
-
+            log.warn(doc.getStrCreate());
             int i = jdbc.update(sql, doc.getName(), doc.getOwner(), doc.getTeam(), doc.isView(), doc.getEdit(),
                     new Timestamp(new java.util.Date().getTime()), doc.getCount() + 1, doc.getContent(), doc.isDel(), doc.isLocked(),doc.getDid());
+            log.warn(doc.getStrCreate());
             if (i > 0) {
                 return true;
             } else {

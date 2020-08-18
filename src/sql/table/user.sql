@@ -14,3 +14,4 @@ create table se.user
         unique (tel)
 );
 
+alter table user AUTO_INCREMENT=100000000;

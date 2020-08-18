@@ -1,4 +1,4 @@
-create table apply
+create table se.apply
 (
     aid    int auto_increment
         primary key,

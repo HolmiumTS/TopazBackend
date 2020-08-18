@@ -38,7 +38,9 @@ public class GetFile {
         Map<String, Object> res = new HashMap<>();
         res.put("result", doc != null);
         res.put("owner", String.valueOf(doc.getOwner()));
+        logger.warn("3"+ doc.getStrCreate());
         res.put("createTime", doc.getStrCreate());
+        logger.warn("4"+doc.getStrCreate());
         res.put("updateTime", doc.getStrUpdate());
         res.put("content", doc.getContent());
         res.put("count", String.valueOf(doc.getCount() / 2));

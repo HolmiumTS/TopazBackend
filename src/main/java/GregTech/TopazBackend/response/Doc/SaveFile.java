@@ -55,8 +55,9 @@ public class SaveFile {
         doc.setName(name);
         doc.setContent(content);
         cooperation.returnLock(did);
-         logger.warn("doc is {}",doc);
+         logger.warn("5"+"doc is {}",doc);
         result=docDao.updateDoc(doc);
+        logger.warn("6"+doc.getStrCreate());
         res.put("result",result);
         return res;
     }
