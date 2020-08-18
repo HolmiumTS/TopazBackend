@@ -40,7 +40,7 @@ public class GetFile {
         res.put("createTime",doc.getStrCreate());
         res.put("updateTime",doc.getStrUpdate());
         res.put("content",doc.getContent());
-        res.put("count",String.valueOf(doc.getCount()));
+        res.put("count",String.valueOf(doc.getCount()/2));
         res.put("name",doc.getName());
         res.put("tid",doc.getTeam());
         // TODO: 2020/8/17  似乎还要加字段
