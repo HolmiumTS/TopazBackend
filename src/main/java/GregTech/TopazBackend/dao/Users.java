@@ -131,7 +131,7 @@ public class Users {
                     ps.setString(2, user.getPassword());
                     ps.setString(3, user.getEmail());
                     ps.setString(4, user.getTel());
-                    ps.setString(5, user.getAvatar());
+                    ps.setString(5, "http://qexiy12gt.hd-bkt.clouddn.com/%E9%BB%84%E7%8E%89.png");
                     return ps;
                 }
             }, keyHolder);
