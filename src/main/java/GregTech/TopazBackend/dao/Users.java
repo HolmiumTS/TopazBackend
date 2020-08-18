@@ -55,6 +55,7 @@ public class Users {
         try {
             String sql = "select  * from user u where u.id=?";
             User user = jdbc.queryForObject(sql, new UserMapper(), id);
+            log.warn("user is {}",user);
             return user;
         } catch (EmptyResultDataAccessException e) {
             return null;

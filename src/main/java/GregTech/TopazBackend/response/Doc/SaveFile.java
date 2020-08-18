@@ -40,6 +40,7 @@ public class SaveFile {
         int id = Integer.parseInt((String) body.get("id"));
         int did = Integer.parseInt((String) body.get("did"));
         Doc doc = docDao.getDocByDid(did);
+        logger.warn("doc is {}",doc);
         if (doc == null) {
             res.put("result", false);
             return res;
@@ -54,6 +55,7 @@ public class SaveFile {
         doc.setName(name);
         doc.setContent(content);
         cooperation.returnLock(did);
+         logger.warn("doc is {}",doc);
         result=docDao.updateDoc(doc);
         res.put("result",result);
         return res;

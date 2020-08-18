@@ -13,9 +13,10 @@ create table se.doc
     content  longtext                               null,
     isdel    tinyint(1)                             not null,
     islocked tinyint(1)               default 0     not null,
-    constraint Doc_Team_tid_fk
-        foreign key (team) references se.team (tid),
     constraint Doc_User_id_fk
         foreign key (owner) references se.user (id)
 );
+
+create index Doc_Team_tid_fk
+    on se.doc (team);
 
