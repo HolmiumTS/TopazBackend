@@ -34,7 +34,7 @@ public class DeleteFile {
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         Map<String, Object> res = new HashMap<>();
-        int id = Integer.parseInt((String) body.get("id"));
+        int id = Integer.parseInt((String) body.get("userId"));
         int did = Integer.parseInt((String) body.get("fileId"));
         boolean result = docDao.tmpDeleteDoc(id, did);
         res.put("result", result);
