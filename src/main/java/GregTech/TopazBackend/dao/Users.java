@@ -40,6 +40,7 @@ public class Users {
             user1.setLatestDoc(rs.getString("latestDoc"));
             user1.setTel(rs.getString("tel"));
             user1.setAvatar(rs.getString("avatar"));
+            user1.setLatestDoc(rs.getString("latestDoc"));
             return user1;
         }
     }
@@ -100,9 +101,9 @@ public class Users {
     public boolean updateUser(User user) {
         try {
             String sql = "update user u set u.id=?,u.name=?,u.password=?,u.email=?" +
-                    ",u.tel=?,u.avatar=? where u.id=?";
+                    ",u.tel=?,u.avatar=?,u.latestDoc=? where u.id=?";
             int i = jdbc.update(sql, user.getId(), user.getName(), user.getPassword()
-                    , user.getEmail(), user.getTel(), user.getAvatar(), user.getId());
+                    , user.getEmail(), user.getTel(), user.getAvatar(), user.getId(),user.getStrRecent());
             if (i > 0) {
                 return true;
             } else {

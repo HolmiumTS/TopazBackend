@@ -116,8 +116,12 @@ public class User {
         this.avatar = avatar;
     }
 
+    public String getStrRecent(){
+        return I2S(this.latestDoc);
+    }
 
-    private static String I2S(int[] docs) {
+
+    private  String I2S(int[] docs) {
         String[] bb = new String[docs.length];
         for (int i = 0; i < docs.length; i++) {
             bb[i] = Integer.toString(docs[i]);
