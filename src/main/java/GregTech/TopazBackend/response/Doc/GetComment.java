@@ -37,16 +37,16 @@ public class GetComment {
     @RequestMapping(value = "/GetComment",// TODO: 2020/8/16
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
-        int did = Integer.parseInt((String)body.get("did"));
-        List<Comment> comments=docDao.getCommentsByDid(did);
-        List<Map<String ,Object>> maps=new ArrayList<>();
+        int did = Integer.parseInt((String) body.get("did"));
+        List<Comment> comments = docDao.getCommentsByDid(did);
+        List<Map<String, Object>> maps = new ArrayList<>();
         for (Comment comment : comments) {
             maps.add(collectData(comment));
         }
 
         Map<String, Object> res = new HashMap<>();
-        res.put("result",true);
-        res.put("comment",maps);
+        res.put("result", true);
+        res.put("comment", maps);
         // TODO: 2020/8/17  似乎还要加字段
         logger.trace("res is {}", res);
         return res;
@@ -59,6 +59,7 @@ public class GetComment {
         map.put("name", user.getName());
         map.put("content", comment.getContent());
         map.put("time", ToolClass.stamp2time(new Timestamp(comment.getTime())));
+        map.put("id", String.valueOf(user.getId()));
         return map;
     }
 }
