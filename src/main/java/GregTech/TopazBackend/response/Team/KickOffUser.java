@@ -47,7 +47,7 @@ public class KickOffUser {
             log.warn("Kick off failed, tid is {}, id is {}.", tid, id);
         }
         if (r){
-            messageDao.generateNewMsg(-1,id,"抱歉，您已被提出团队"+teamDao.getTeamByTid(tid).getName());
+            messageDao.generateNewMsg(-1,id,"抱歉，您已被踢出团队"+teamDao.getTeamByTid(tid).getName());
         }
         res.put("result", r);
         return res;
