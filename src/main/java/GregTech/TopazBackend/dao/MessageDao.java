@@ -17,7 +17,7 @@ import java.util.List;
 
 @Repository("messageDao")
 public class MessageDao {
-    private static final Logger log = LoggerFactory.getLogger(Teams.class);
+    private static final Logger log = LoggerFactory.getLogger(MessageDao.class);
     private final JdbcTemplate jdbc;
 
     @Autowired
@@ -42,8 +42,10 @@ public class MessageDao {
 
     public boolean generateNewMsg(int sender,int receiver,String content){
         try {
+            log.warn("try to insert message");
             String sql ="insert  into  message(sender, receiver, content,time) values(?,?,?,?) ";
-            jdbc.update(sql,sender,receiver,content,new Timestamp(new Date().getTime()));
+            int i=jdbc.update(sql,sender,receiver,content,new Timestamp(new Date().getTime()));
+
             return  true;
         }catch (Exception e){
             return false;

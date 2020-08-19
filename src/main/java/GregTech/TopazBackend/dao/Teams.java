@@ -50,7 +50,7 @@ public class Teams {
             U_t ut = new U_t();
             ut.setAdmin(rs.getBoolean("isAdmin"));
             ut.setTeam(rs.getInt("team"));
-            ut.setUser(rs.getByte("user"));
+            ut.setUser(rs.getInt("user"));
             return ut;
         }
     }
