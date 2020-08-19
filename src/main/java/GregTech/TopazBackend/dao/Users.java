@@ -102,14 +102,17 @@ public class Users {
         try {
             String sql = "update user u set u.id=?,u.name=?,u.password=?,u.email=?" +
                     ",u.tel=?,u.avatar=?,u.latestDoc=? where u.id=?";
+            String recent=user.getStrRecent();
             int i = jdbc.update(sql, user.getId(), user.getName(), user.getPassword()
-                    , user.getEmail(), user.getTel(), user.getAvatar(), user.getId(),user.getStrRecent());
+                    , user.getEmail(), user.getTel(), user.getAvatar(), user.getId(),recent);
+            log.warn("recentStrIs",user.getStrRecent());
             if (i > 0) {
                 return true;
             } else {
                 return false;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
 
@@ -138,6 +141,7 @@ public class Users {
             }, keyHolder);
             return keyHolder.getKey().intValue();
         }catch (Exception e){
+            e.printStackTrace();
             return -1;
         }
     }

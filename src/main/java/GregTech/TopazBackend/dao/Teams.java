@@ -122,6 +122,7 @@ public class Teams {
                 return false;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             log.warn("err happened in setAdmin");
             return false;
         }
@@ -145,6 +146,7 @@ public class Teams {
                 return false;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             log.warn("err happened in removeUser");
             return false;
         }
@@ -168,6 +170,7 @@ public class Teams {
                 return false;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             log.warn("err happened in updateTeam");
             return false;
         }
@@ -198,6 +201,7 @@ public class Teams {
             jdbc.update(sql2, team.getOwner(), id, 1);
             return id;
         } catch (Exception e) {
+            e.printStackTrace();
             log.warn("err happened in addTeam ");
             return -1;
         }
@@ -245,6 +249,7 @@ public class Teams {
             jdbc.update(sql, id, tid);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }

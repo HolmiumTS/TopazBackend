@@ -126,8 +126,7 @@ public class User {
         for (int i = 0; i < docs.length; i++) {
             bb[i] = Integer.toString(docs[i]);
         }
-        String s = "";
-        s.join(";", docs.toString());
+        String s = String.join(";", bb);
         return s;
     }
 }
