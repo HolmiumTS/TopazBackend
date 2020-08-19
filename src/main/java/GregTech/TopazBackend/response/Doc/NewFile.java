@@ -1,6 +1,7 @@
 package GregTech.TopazBackend.response.Doc;
 
 import GregTech.TopazBackend.dao.DocDao;
+import GregTech.TopazBackend.dao.TemplateDao;
 import GregTech.TopazBackend.metadata.Doc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +19,11 @@ public class NewFile {
     private static final Logger logger = LoggerFactory.getLogger(NewFile.class);
 
     private final DocDao docDao;
-
+    private final TemplateDao templateDao;
     @Autowired
-    public NewFile(DocDao docDao) {
+    public NewFile(DocDao docDao, TemplateDao templateDao) {
         this.docDao = docDao;
+        this.templateDao=templateDao;
     }
 
     @RequestMapping(value = "/NewFile",
@@ -32,7 +34,7 @@ public class NewFile {
         doc.setTeam(Integer.parseInt((String) body.get("teamId")));
         doc.setName((String) body.get("name"));
         int tpid = Integer.parseInt((String) body.get("templateId"));
-        doc.setContent(tpid == -1 ? "" : docDao.getDocByDid(tpid).getContent());
+        doc.setContent(tpid == -1 ? "" :  templateDao.getTemplateBytemid(tpid).getContent());
         logger.warn("doc is {}", doc);
         int id = docDao.addDoc(doc);
         Map<String, Object> res = new HashMap<>();
