@@ -19,7 +19,8 @@ import java.util.List;
 @Repository("userDao")
 public class Users {
     private final JdbcTemplate jdbc;
-    private static final Logger log =LoggerFactory.getLogger(Users.class);
+    private static final Logger log = LoggerFactory.getLogger(Users.class);
+
     @Autowired
     public Users(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
@@ -55,7 +56,7 @@ public class Users {
         try {
             String sql = "select  * from user u where u.id=?";
             User user = jdbc.queryForObject(sql, new UserMapper(), id);
-            log.warn("user is {}",user);
+            log.warn("user is {}", user);
             return user;
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -106,9 +107,11 @@ public class Users {
             if (i > 0) {
                 return true;
             } else {
+                log.error("{}", i);
                 return false;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
 
@@ -136,7 +139,7 @@ public class Users {
                 }
             }, keyHolder);
             return keyHolder.getKey().intValue();
-        }catch (Exception e){
+        } catch (Exception e) {
             return -1;
         }
     }
@@ -161,11 +164,9 @@ public class Users {
      */
     public List<User> getAdminUserByTid(int tid) {
         //untest
-        String sql ="select id, name, password, email, latestdoc, tel, avatar, user, team, isadmin from user u,u_t ut where u.id=ut.user and ut.team=? and ut.isAdmin=1";
-        return jdbc.query(sql,new UserMapper(),tid);
+        String sql = "select id, name, password, email, latestdoc, tel, avatar, user, team, isadmin from user u,u_t ut where u.id=ut.user and ut.team=? and ut.isAdmin=1";
+        return jdbc.query(sql, new UserMapper(), tid);
     }
-
-
 
 
     /**
