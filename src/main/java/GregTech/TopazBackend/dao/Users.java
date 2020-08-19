@@ -105,7 +105,7 @@ public class Users {
                     ",u.tel=?,u.avatar=?,u.latestDoc=? where u.id=?";
             String recent=user.getStrRecent();
             int i = jdbc.update(sql, user.getId(), user.getName(), user.getPassword()
-                    , user.getEmail(), user.getTel(), user.getAvatar(), user.getId(),recent);
+                    , user.getEmail(), user.getTel(), user.getAvatar(),recent,user.getId());
             log.warn("recentStrIs",user.getStrRecent());
             if (i > 0) {
                 return true;

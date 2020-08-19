@@ -9,7 +9,7 @@ public class User {
     String name;
     String password;
     String email;
-    int[] latestDoc;
+    int[] latestDoc= new int[0];
     String tel;
     String avatar;
 
@@ -127,6 +127,9 @@ public class User {
             bb[i] = Integer.toString(docs[i]);
         }
         String s = String.join(";", bb);
+        if (s==null){
+            return " ";
+        }
         return s;
     }
 }
