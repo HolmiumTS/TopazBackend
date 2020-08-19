@@ -17,7 +17,6 @@ public class DissolveTeam {
     private static final Logger log = LoggerFactory.getLogger(DissolveTeam.class);
 
     private final Teams teamDao;
-
     @Autowired
     public DissolveTeam(Teams teamDao) {
         this.teamDao = teamDao;

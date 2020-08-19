@@ -1,6 +1,7 @@
 package GregTech.TopazBackend.response.Apply;
 
 import GregTech.TopazBackend.dao.Applies;
+import GregTech.TopazBackend.dao.MessageDao;
 import GregTech.TopazBackend.dao.Teams;
 import GregTech.TopazBackend.metadata.Apply;
 import GregTech.TopazBackend.metadata.ApplyStatus;
@@ -21,11 +22,13 @@ public class JudgeApplication {
 
     private final Applies applyDao;
     private final Teams teamDao;
+    private final MessageDao messageDao;
 
     @Autowired
-    public JudgeApplication(Applies applyDao, Teams teamDao) {
+    public JudgeApplication(Applies applyDao, Teams teamDao,MessageDao messageDao) {
         this.applyDao = applyDao;
         this.teamDao = teamDao;
+        this.messageDao=messageDao;
     }
 
     @RequestMapping(value = "/JudgeApplication",
@@ -47,6 +50,7 @@ public class JudgeApplication {
                 apply.setStatus(ApplyStatus.ACCEPTED);
                 boolean r = teamDao.addMember(id, tid);
                 if (r) {
+                    messageDao.generateNewMsg(-1,id,"您加入团队："+teamDao.getTeamByTid(tid).getName()+"的申请已经被接受");
                     log.trace("Add to team successfully.");
                 } else {
                     log.warn("Add failed: Member exists");
@@ -54,6 +58,7 @@ public class JudgeApplication {
                     return res;
                 }
             } else {
+                messageDao.generateNewMsg(-1,id,"抱歉，您加入团队："+teamDao.getTeamByTid(tid).getName()+"的申请已经被拒绝");
                 apply.setStatus(ApplyStatus.REFUSED);
                 log.trace("Refuse apply successfully.");
             }

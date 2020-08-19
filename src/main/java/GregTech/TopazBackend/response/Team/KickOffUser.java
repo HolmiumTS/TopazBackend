@@ -1,5 +1,6 @@
 package GregTech.TopazBackend.response.Team;
 
+import GregTech.TopazBackend.dao.MessageDao;
 import GregTech.TopazBackend.dao.Teams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +18,12 @@ public class KickOffUser {
     private static final Logger log = LoggerFactory.getLogger(KickOffUser.class);
 
     private final Teams teamDao;
+    private final MessageDao messageDao;
 
     @Autowired
-    public KickOffUser(Teams teamDao) {
+    public KickOffUser(Teams teamDao,MessageDao messageDao) {
         this.teamDao = teamDao;
+        this.messageDao=messageDao;
     }
 
     @RequestMapping(value = "/KickOff",
@@ -42,6 +45,9 @@ public class KickOffUser {
         boolean r = teamDao.removeUser(tid, id);
         if (!r) {
             log.warn("Kick off failed, tid is {}, id is {}.", tid, id);
+        }
+        if (r){
+            messageDao.generateNewMsg(-1,id,"抱歉，您已被提出团队"+teamDao.getTeamByTid(tid).getName());
         }
         res.put("result", r);
         return res;

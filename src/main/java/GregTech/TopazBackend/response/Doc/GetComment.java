@@ -58,7 +58,7 @@ public class GetComment {
         map.put("avatar", user.getAvatar());
         map.put("name", user.getName());
         map.put("content", comment.getContent());
-        map.put("time", String.valueOf(ToolClass.stamp2time(new Timestamp(comment.getTime()))));
+        map.put("time", ToolClass.stamp2time(new Timestamp(comment.getTime())));
         return map;
     }
 }
