@@ -88,6 +88,7 @@ public class DocDao {
             int i = jdbc.update(sql, id, did, tid);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -98,6 +99,7 @@ public class DocDao {
             jdbc.update(sql, id, did);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -208,6 +210,7 @@ public class DocDao {
             }, keyHolder);
             return keyHolder.getKey().intValue();
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("error happened in add Doc");
             e.printStackTrace();
             return -1;
@@ -321,6 +324,7 @@ public class DocDao {
             jdbc.update(sql, did);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             log.warn("err happened in delDoc");
             return false;
         }

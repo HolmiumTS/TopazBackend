@@ -48,6 +48,7 @@ public class MessageDao {
 
             return  true;
         }catch (Exception e){
+            e.printStackTrace();
             return false;
         }
     }
@@ -69,6 +70,7 @@ public class MessageDao {
             jdbc.update(sql,mid);
             return true;
         }catch (Exception e){
+            e.printStackTrace();
             return false;
         }
     }

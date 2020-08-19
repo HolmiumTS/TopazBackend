@@ -53,6 +53,7 @@ public class Applies {
             String sql = "select aid, time, id, tid, status from apply a where a.id = ? and a.status = ?";
             return jdbc.query(sql,new ApplyMapper(),id,status.ordinal());
         }catch (Exception e){
+            e.printStackTrace();
             return null;
         }
     }
@@ -76,6 +77,7 @@ public class Applies {
             }
             return  applies;
         }catch (Exception e){
+            e.printStackTrace();
             return null;
         }
     }
@@ -116,6 +118,7 @@ public class Applies {
                 return false;
             }
         }catch (Exception e){
+            e.printStackTrace();
             log.warn("apply not changed");
             return false;
         }
@@ -144,6 +147,7 @@ public class Applies {
             },keyHolder);
             return keyHolder.getKey().intValue();
         }catch ( Exception e){
+            e.printStackTrace();
             log.warn("err happened in addApply");
             return -1;
         }

@@ -62,6 +62,7 @@ public class GetAuth {
         // this user is the owner of this doc
         if (doc.getOwner() == id) {
             user.addLatestDoc(did);
+            userDao.updateUser(user);
             res.put("admin", true);
             res.put("edit", true);
             res.put("view", true);
@@ -84,6 +85,7 @@ public class GetAuth {
             res.put("edit", doc.getEdit() > 0);
             res.put("view", true);
             user.addLatestDoc(did);
+            userDao.updateUser(user);
             res.put("lock", doc.isLocked());
             return res;
         }
@@ -92,6 +94,7 @@ public class GetAuth {
         res.put("edit", doc.getEdit() > 1);
         if (doc.isView()){
             user.addLatestDoc(did);
+            userDao.updateUser(user);
         }
         res.put("view",doc.isView());
         res.put("lock",doc.isLocked());

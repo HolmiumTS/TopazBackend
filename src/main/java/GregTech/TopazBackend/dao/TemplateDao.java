@@ -45,6 +45,7 @@ public class TemplateDao {
         try {
            return jdbc.query(sql,new templateMapper(),uid);
         }catch (Exception e){
+            e.printStackTrace();
             return null;
         }
     }
@@ -65,6 +66,7 @@ public class TemplateDao {
             return jdbc.queryForObject(sql, new templateMapper(), temid);
 
         } catch (EmptyResultDataAccessException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -78,6 +80,7 @@ public class TemplateDao {
             }
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -88,6 +91,7 @@ public class TemplateDao {
             jdbc.update(sql, user, temid);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
