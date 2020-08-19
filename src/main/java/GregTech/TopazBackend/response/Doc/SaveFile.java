@@ -54,10 +54,10 @@ public class SaveFile {
         boolean result = false;
         doc.setName(name);
         doc.setContent(content);
-        cooperation.returnLock(did);
         logger.warn("5" + "doc is {}", doc);
         doc.setCount(doc.getCount() + 1);
         result = docDao.updateDoc(doc);
+        cooperation.returnLock(did);
         logger.warn("6" + doc.getStrCreate());
         res.put("result", result);
         return res;

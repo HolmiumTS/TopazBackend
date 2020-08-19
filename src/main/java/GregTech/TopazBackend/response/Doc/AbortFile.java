@@ -46,6 +46,7 @@ public class AbortFile {
         if (doc.isLocked()) {
             cooperation.returnLock(doc.getDid());
         }
+        logger.warn("id is {},did is {}",id,did);
         res.put("result", true);
         return res;
     }
