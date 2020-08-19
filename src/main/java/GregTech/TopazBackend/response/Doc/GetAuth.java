@@ -4,6 +4,7 @@ import GregTech.TopazBackend.dao.DocDao;
 import GregTech.TopazBackend.dao.Teams;
 import GregTech.TopazBackend.dao.Users;
 import GregTech.TopazBackend.metadata.Doc;
+import GregTech.TopazBackend.metadata.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class GetAuth {
         Map<String, Object> res = new HashMap<>();
         int did = Integer.parseInt((String) body.get("did"));
         int id = Integer.parseInt((String) body.get("id"));
+        User user =userDao.getById(id);
         Doc doc = docDao.getDocByDid(did);
         int dteam = doc.getTeam();
         if (doc == null) {
@@ -59,6 +61,7 @@ public class GetAuth {
         res.put("result", true);
         // this user is the owner of this doc
         if (doc.getOwner() == id) {
+            user.addLatestDoc(did);
             res.put("admin", true);
             res.put("edit", true);
             res.put("view", true);
@@ -67,6 +70,7 @@ public class GetAuth {
         }
         //this doc is team's and user is not admin and
         if (teamDao.isAdmin(id, doc.getTeam())) {
+            user.addLatestDoc(did);
             res.put("admin", true);
             res.put("edit", doc.getEdit() > 0);
             res.put("view", true);
@@ -79,12 +83,16 @@ public class GetAuth {
             res.put("admin", false);
             res.put("edit", doc.getEdit() > 0);
             res.put("view", true);
+            user.addLatestDoc(did);
             res.put("lock", doc.isLocked());
             return res;
         }
         // user that not in this team or not a user
         res.put("admin", false);
         res.put("edit", doc.getEdit() > 1);
+        if (doc.isView()){
+            user.addLatestDoc(did);
+        }
         res.put("view",doc.isView());
         res.put("lock",doc.isLocked());
         return res;
