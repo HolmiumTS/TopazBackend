@@ -56,6 +56,7 @@ public class GetCollectedFIle {
         map.put("team", String.valueOf(doc.getTeam()));
         map.put("view", doc.isView() ?String.valueOf(1)  : String.valueOf(0));
         map.put("edit", String.valueOf(doc.getEdit()));
+        map.put("owner",String.valueOf(doc.getOwner()));
         return map;
     }
 }

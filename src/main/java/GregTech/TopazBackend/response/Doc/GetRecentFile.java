@@ -56,6 +56,7 @@ public class GetRecentFile {
         map.put("team",String.valueOf(doc.getTeam()));
         map.put("time", doc.getStrUpdate());
         map.put("collected",docDao.isCollected(id,doc.getDid())?"已收藏":"未收藏");
+        map.put("onwer",doc.getOwner());
         map.put("view",doc.isView()?String.valueOf(1):String.valueOf(0));
         map.put("edit",String.valueOf(doc.getEdit()));
         return map;
