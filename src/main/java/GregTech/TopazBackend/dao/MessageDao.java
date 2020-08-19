@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import java.sql.Timestamp;
 import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,8 +42,8 @@ public class MessageDao {
 
     public boolean generateNewMsg(int sender,int receiver,String content){
         try {
-            String sql ="insert  into  message(sender, receiver, content,time) values(?,?,?) ";
-            jdbc.update(sql,sender,receiver,content,new Date().getTime());
+            String sql ="insert  into  message(sender, receiver, content,time) values(?,?,?,?) ";
+            jdbc.update(sql,sender,receiver,content,new Timestamp(new Date().getTime()));
             return  true;
         }catch (Exception e){
             return false;

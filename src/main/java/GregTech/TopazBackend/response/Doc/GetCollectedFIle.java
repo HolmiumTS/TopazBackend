@@ -32,6 +32,8 @@ public class GetCollectedFIle {
     @RequestMapping(value = "/GetCollectedFile",
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
+        logger.warn("start from here \n");
+
         int id = Integer.parseInt((String) body.get("id"));
         Map<String, Object> res = new HashMap<>();
         List<Map<String, Object>> files = new ArrayList<>();

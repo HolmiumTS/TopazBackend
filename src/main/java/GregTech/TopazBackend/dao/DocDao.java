@@ -65,7 +65,7 @@ public class DocDao {
         @Override
         public Deldoc mapRow(ResultSet rs, int rowNum) throws SQLException {
             Deldoc deldoc = new Deldoc();
-            deldoc.setDid(rs.getInt("deid"));
+            deldoc.setDid(rs.getInt("did"));
             deldoc.setTime(rs.getTimestamp("time").getTime());
             deldoc.setExecutor(rs.getInt("executor"));
             return deldoc;
@@ -140,7 +140,8 @@ public class DocDao {
     }
 
     public List<Doc> getCollectedDocsByID(int id) {
-        String sql = "select * from doc d ,u_d ud where ud.uid=?";
+        String sql = "select * from doc d ,u_d ud where ud.uid=? and ud.did=d.did";
+        log.warn("id is{}",id);
         return jdbc.query(sql, new DocMapper(), id);
     }
 
@@ -261,8 +262,8 @@ public class DocDao {
     public boolean tmpDeleteDoc(int id, int did) {
         try {
             String sql2 = "insert  into deldoc(did, time, executor) values (?,?,?)";
-            String sql = "update  doc d set d.isdel=1 ";
-            int i = jdbc.update(sql);
+            String sql = "update  doc d set d.isdel=1 where did=?";
+            int i = jdbc.update(sql,did);
             if (i > 0) {
                 i = jdbc.update(sql2, did, new Timestamp(new Date().getTime()), id);
                 return true;
