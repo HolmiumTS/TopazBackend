@@ -17,33 +17,35 @@ import java.util.Map;
 @RestController
 public class AuthorizeFile {
 
-private static final Logger logger = LoggerFactory.getLogger(AuthorizeFile.class);// TODO: 2020/8/16
+    private static final Logger logger = LoggerFactory.getLogger(AuthorizeFile.class);// TODO: 2020/8/16
 
-private final DocDao docDao;
-private final Users userDao;
-@Autowired
-public AuthorizeFile(DocDao docDao, Users users) {
+    private final DocDao docDao;
+    private final Users userDao;
+
+    @Autowired
+    public AuthorizeFile(DocDao docDao, Users users) {
         this.docDao = docDao;
         this.userDao = users;
-        }
+    }
 
-@RequestMapping(value = "/AuthorizeFile",// TODO: 2020/8/16
-        method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-public Map<String, Object> response(@RequestBody Map<String, Object> body) {
-        int view =Integer.parseInt((String)body.get("view"));
-        int edit =Integer.parseInt((String)body.get("edit"));
+    @RequestMapping(value = "/AuthorizeFile",// TODO: 2020/8/16
+            method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public Map<String, Object> response(@RequestBody Map<String, Object> body) {
+        int view = Integer.parseInt((String) body.get("view"));
+        int edit = Integer.parseInt((String) body.get("edit"));
         Doc doc = docDao.getDocByDid(Integer.parseInt((String) body.get("id")));
-        Map<String ,Object>res =new HashMap<>();
-        if (doc==null){
-                res.put("result",false);
-                return res;
+        Map<String, Object> res = new HashMap<>();
+        if (doc == null) {
+            res.put("result", false);
+            return res;
         }
-        doc.setView(view==0?false:true);
+        doc.setView(view == 0 ? false : true);
         doc.setEdit(edit);
-        res.put("result",true);
+        docDao.updateDoc(doc);
+        res.put("result", true);
         //todo
         return res;
-        }
+    }
 
 }
 

@@ -43,7 +43,7 @@ public class GetFile {
         logger.warn("4" + doc.getStrCreate());
         res.put("updateTime", doc.getStrUpdate());
         res.put("content", doc.getContent());
-        res.put("count", String.valueOf(doc.getCount() / 2));
+        res.put("count", String.valueOf(doc.getCount()));
         res.put("name", doc.getName());
         res.put("tid", doc.getTeam());
         res.put("edit", String.valueOf(doc.getEdit()));

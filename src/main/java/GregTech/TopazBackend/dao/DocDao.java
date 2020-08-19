@@ -141,7 +141,7 @@ public class DocDao {
 
     public List<Doc> getCollectedDocsByID(int id) {
         String sql = "select * from doc d ,u_d ud where ud.uid=? and ud.did=d.did";
-        log.warn("id is{}",id);
+        log.warn("id is{}", id);
         return jdbc.query(sql, new DocMapper(), id);
     }
 
@@ -246,7 +246,7 @@ public class DocDao {
 
     public boolean commitComment(int id, int did, String content) {
         String sql = "insert  into comment( did, content, uid,time) values (?,?,?,?)";
-        int i = jdbc.update(sql, did, content, id,new Timestamp(new Date().getTime()));
+        int i = jdbc.update(sql, did, content, id, new Timestamp(new Date().getTime()));
         if (i > 0) {
             return true;
         } else {
@@ -256,14 +256,14 @@ public class DocDao {
 
     public List<Comment> getCommentsByDid(int did) {
         String sql = "select * from comment where did=?";
-        return jdbc.query(sql,new commentMapper(),did);
+        return jdbc.query(sql, new commentMapper(), did);
     }
 
     public boolean tmpDeleteDoc(int id, int did) {
         try {
             String sql2 = "insert  into deldoc(did, time, executor) values (?,?,?)";
             String sql = "update  doc d set d.isdel=1 where did=?";
-            int i = jdbc.update(sql,did);
+            int i = jdbc.update(sql, did);
             if (i > 0) {
                 i = jdbc.update(sql2, did, new Timestamp(new Date().getTime()), id);
                 return true;
@@ -286,7 +286,7 @@ public class DocDao {
             String sql = "update  doc d set d.name=?,d.owner=?,d.team=?,d.view=?,d.edit=?,d.`update`=?,d.count=?,d.content=?,d.isdel=?,d.islocked=? where did =?";
             log.warn(doc.getStrCreate());
             int i = jdbc.update(sql, doc.getName(), doc.getOwner(), doc.getTeam(), doc.isView(), doc.getEdit(),
-                    new Timestamp(new java.util.Date().getTime()), doc.getCount() + 1, doc.getContent(), doc.isDel(), doc.isLocked(), doc.getDid());
+                    new Timestamp(new java.util.Date().getTime()), doc.getCount(), doc.getContent(), doc.isDel(), doc.isLocked(), doc.getDid());
             log.warn(doc.getStrCreate());
             if (i > 0) {
                 return true;

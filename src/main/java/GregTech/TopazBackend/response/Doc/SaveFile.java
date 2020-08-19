@@ -27,10 +27,10 @@ public class SaveFile {
     private final Users userDao;
 
     @Autowired
-    public SaveFile(DocDao docDao, Users users,Cooperation cooperation) {
+    public SaveFile(DocDao docDao, Users users, Cooperation cooperation) {
         this.docDao = docDao;
         this.userDao = users;
-        this.cooperation=cooperation;
+        this.cooperation = cooperation;
     }
 
     @RequestMapping(value = "/SaveFile",// TODO: 2020/8/16
@@ -40,7 +40,7 @@ public class SaveFile {
         int id = Integer.parseInt((String) body.get("id"));
         int did = Integer.parseInt((String) body.get("did"));
         Doc doc = docDao.getDocByDid(did);
-        logger.warn("doc is {}",doc);
+        logger.warn("doc is {}", doc);
         if (doc == null) {
             res.put("result", false);
             return res;
@@ -55,10 +55,11 @@ public class SaveFile {
         doc.setName(name);
         doc.setContent(content);
         cooperation.returnLock(did);
-         logger.warn("5"+"doc is {}",doc);
-        result=docDao.updateDoc(doc);
-        logger.warn("6"+doc.getStrCreate());
-        res.put("result",result);
+        logger.warn("5" + "doc is {}", doc);
+        doc.setCount(doc.getCount() + 1);
+        result = docDao.updateDoc(doc);
+        logger.warn("6" + doc.getStrCreate());
+        res.put("result", result);
         return res;
     }
 }
