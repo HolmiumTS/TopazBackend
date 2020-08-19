@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 @RestController
@@ -31,7 +32,7 @@ public class ChangeMessageStatus {
     @RequestMapping(value = "/ChangeMessageStatus",//
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
-        String  [] ids = (String[])body.get("id");
+        ArrayList<String> ids = (ArrayList<String>)body.get("id");
         for (String id : ids) {
             messageDao.markAsRead(Integer.parseInt(id));
         }
