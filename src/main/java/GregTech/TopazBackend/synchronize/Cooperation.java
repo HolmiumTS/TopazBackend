@@ -29,7 +29,8 @@ public class Cooperation {
                 return false;
             }else {
                 doc.setLocked(true);
-                return docDao.updateDoc(doc);//if update fails ,the doc is not locked
+                docDao.updateDoc(doc);
+                return  true;//if update fails ,the doc is not locked
             }
         }
     }

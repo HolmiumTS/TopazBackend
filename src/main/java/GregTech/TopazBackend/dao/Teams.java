@@ -1,5 +1,6 @@
 package GregTech.TopazBackend.dao;
 
+import GregTech.TopazBackend.metadata.Doc;
 import GregTech.TopazBackend.metadata.Team;
 import GregTech.TopazBackend.metadata.U_t;
 import org.slf4j.Logger;
@@ -24,9 +25,11 @@ import java.util.List;
 public class Teams {
     private static final Logger log = LoggerFactory.getLogger(Teams.class);
     private final JdbcTemplate jdbc;
+    private final DocDao docDao;
 
     @Autowired
-    public Teams(JdbcTemplate jdbc) {
+    public Teams(JdbcTemplate jdbc, DocDao docDao) {
+        this.docDao=docDao;
         this.jdbc = jdbc;
     }
 
@@ -217,6 +220,10 @@ public class Teams {
     public boolean delTeam(int tid) {
         //untest
         try {
+            for (Doc doc :docDao.getTeamFileByTid(tid)){
+                String sql6 ="delete  from  deldoc where  did=?";
+                jdbc.update(sql6,doc.getDid());
+            }
             String sql2 = "delete from u_t ut where ut.team =?";
             String sql = "delete from team t where t.tid=?";
             String sql3="delete from doc where team =?";

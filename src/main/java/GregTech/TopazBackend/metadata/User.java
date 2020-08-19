@@ -2,14 +2,14 @@ package GregTech.TopazBackend.metadata;
 
 import GregTech.TopazBackend.config.Constant;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class User {
     int id;
     String name;
     String password;
     String email;
-    int[] latestDoc= new int[0];
+    int[] latestDoc = new int[0];
     String tel;
     String avatar;
 
@@ -51,8 +51,17 @@ public class User {
     }
 
     public int[] getLatestDoc() {
-        //todo
-        return latestDoc;
+        List<Integer> list = new ArrayList<>();
+        for (int i : latestDoc) {
+            if (!list.contains(i)) {
+                list.add(i);
+            }
+        }
+        int []d=new int[list.size()];
+        for ( int i=0;i<list.size();i++){
+            d[i]=list.get(i);
+        }
+       return d;
     }
 
     public void setLatestDoc(int[] latestDoc) {
@@ -61,10 +70,10 @@ public class User {
 
     public void setLatestDoc(String latestDoc) {
         //todo 这里可能后面要改
-       if (latestDoc==null){
-           this.latestDoc=new int[0];
-           return;
-       }
+        if (latestDoc == null) {
+            this.latestDoc = new int[0];
+            return;
+        }
         if ("".equals(latestDoc)) {
             this.latestDoc = new int[0];
             return;
@@ -116,18 +125,18 @@ public class User {
         this.avatar = avatar;
     }
 
-    public String getStrRecent(){
+    public String getStrRecent() {
         return I2S(this.latestDoc);
     }
 
 
-    private  String I2S(int[] docs) {
+    private String I2S(int[] docs) {
         String[] bb = new String[docs.length];
         for (int i = 0; i < docs.length; i++) {
             bb[i] = Integer.toString(docs[i]);
         }
         String s = String.join(";", bb);
-        if (s==null){
+        if (s == null) {
             return " ";
         }
         return s;
