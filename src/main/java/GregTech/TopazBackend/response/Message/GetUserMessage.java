@@ -53,7 +53,7 @@ public class GetUserMessage {
         map.put("id", String.valueOf(message.getMid()));
         map.put("content", message.getContent());
         map.put("time", message.getStrTime());
-        map.put("status",message.getStatus());
+        map.put("status",String.valueOf( message.getStatus()));
         return map;
     }
 
