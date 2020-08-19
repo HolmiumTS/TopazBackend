@@ -38,15 +38,16 @@ public class GetFile {
         Map<String, Object> res = new HashMap<>();
         res.put("result", doc != null);
         res.put("owner", String.valueOf(doc.getOwner()));
-        logger.warn("3"+ doc.getStrCreate());
+        logger.warn("3" + doc.getStrCreate());
         res.put("createTime", doc.getStrCreate());
-        logger.warn("4"+doc.getStrCreate());
+        logger.warn("4" + doc.getStrCreate());
         res.put("updateTime", doc.getStrUpdate());
         res.put("content", doc.getContent());
         res.put("count", String.valueOf(doc.getCount() / 2));
         res.put("name", doc.getName());
         res.put("tid", doc.getTeam());
-        // TODO: 2020/8/17  似乎还要加字段
+        res.put("edit", String.valueOf(doc.getEdit()));
+        res.put("view", doc.isView() ? "1" : "0");
         logger.trace("res is {}", res);
         return res;
     }
