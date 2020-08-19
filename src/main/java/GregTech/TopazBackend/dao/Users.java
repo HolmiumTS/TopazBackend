@@ -104,8 +104,8 @@ public class Users {
             String sql = "update user u set u.id=?,u.name=?,u.password=?,u.email=?" +
                     ",u.tel=?,u.avatar=?,u.latestDoc=? where u.id=?";
             int i = jdbc.update(sql, user.getId(), user.getName(), user.getPassword()
-                    , user.getEmail(), user.getTel(), user.getAvatar(), user.getId(),user.getStrRecent());
-            if (i > 0) {
+                    , user.getEmail(), user.getTel(), user.getAvatar(), user.getId(), user.getStrRecent());
+            if (i >= 0) {
                 return true;
             } else {
                 log.error("{}", i);
