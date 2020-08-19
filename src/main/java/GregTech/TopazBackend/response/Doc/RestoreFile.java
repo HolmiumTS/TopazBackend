@@ -34,8 +34,8 @@ public class RestoreFile {
             method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Map<String, Object> response(@RequestBody Map<String, Object> body) {
         Map<String, Object> res = new HashMap<>();
-        int id = Integer.parseInt((String) body.get("id"));
-        int did = Integer.parseInt((String) body.get("did"));
+        int id = Integer.parseInt((String) body.get("userId"));
+        int did = Integer.parseInt((String) body.get("fileId"));
         boolean result = docDao.restoreDoc(id, did);
         res.put("result", result);
         return res;
