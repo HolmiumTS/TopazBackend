@@ -1,3 +1,3 @@
 - run `npm install -g pm2`
-- run `npm install` at `**/static/`
+- run `npm install` at `static/`
 - run `pm2 start app.js`
